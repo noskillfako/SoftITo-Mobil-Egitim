@@ -15,3 +15,6 @@ Ders Güncellemesi Yapıldı
 2
 
 3
+
+Hakkımda
+SofITo mobil app eğitiminde bir sonraki aşamaya geçip bol bol proje geliştirmek istiyorum.
