@@ -10,3 +10,8 @@ Readme Güncellemesi yaptı
 
 Ders Güncellemesi Yapıldı
 
+1
+
+2
+
+3
