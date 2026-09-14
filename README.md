@@ -18,3 +18,10 @@ Ders Güncellemesi Yapıldı
 
 Hakkımda
 SofITo mobil app eğitiminde bir sonraki aşamaya geçip bol bol proje geliştirmek istiyorum.
+
+
+
+14-09-2026
+
+Tag Ekleme ve Release Yayınlama Yapıldı
+
