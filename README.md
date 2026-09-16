@@ -30,4 +30,11 @@ SofITo mobil app eğitiminde bir sonraki aşamaya geçip bol bol proje geliştir
 Tag Ekleme ve Release Yayınlama Yapıldı
 Stash Mantığı
 
+15-09-2026
+
+KahveGo Odevi Tag eklendi ve Release edildi
+
+16-09-2026
+
+SQL crud inner join ve Mobil Güvenlik Odevi Tag eklendi ve Release edildi
 
