@@ -38,3 +38,7 @@ KahveGo Odevi Tag eklendi ve Release edildi
 
 SQL crud inner join ve Mobil Güvenlik Odevi Tag eklendi ve Release edildi
 
+17-09-2026
+
+SQL 3NF kurallarına uygun DDL sorguları yazdık ve HTML'ye giriş
+
