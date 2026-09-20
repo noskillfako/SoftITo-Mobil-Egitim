@@ -42,3 +42,7 @@ SQL crud inner join ve Mobil Güvenlik Odevi Tag eklendi ve Release edildi
 
 SQL 3NF kurallarına uygun DDL sorguları yazdık ve HTML'ye giriş
 
+18-09-2026
+
+HTML üzerine çalışmalar yapıldı
+
