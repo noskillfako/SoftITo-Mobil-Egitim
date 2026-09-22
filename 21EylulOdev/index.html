@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nokia3310 Telefon Tanıtımı</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: cyan;
+            color: black;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-sizing: border-box;
+        }
+        .card {
+            background: whitesmoke;
+            padding: 20px;
+            border-radius: 17px;
+            border: 1px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 15px;
+            width: 100%;
+            max-width: 700px;
+            box-sizing: border-box;
+        }
+        .player-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-top: 12px;
+            overflow: hidden;
+            background-color: #000;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+        video {
+            width: 100%;
+            object-fit: contain;
+            display: block;
+        }
+        .custom-controls {
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .timeline-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .progress-bar {
+            flex: 1;
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        .left-controls,
+        .right-controls {
+            display: flex;
+            gap: 8px;
+        }
+        .iFramecard {
+            background-color: pink;
+            padding: 40px;
+            border-radius: 20px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            width: 100%;
+            max-width: 700px;
+            box-sizing: border-box;
+        }
+        iframe {
+            width: 100%;
+            border-radius: 8px;
+            border: none;
+        }
+        button {
+            background: rgba(0, 0, 0, 0.5);
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 6px 10px;
+            border-radius: 4px;
+        }
+        button:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+        .stok-card {
+            background: rgb(8, 160, 41);
+            padding: 20px;
+            border-radius: 17px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 700px;
+            box-sizing: border-box;
+        }
+        .sss-card {
+            background: rgb(152, 59, 5);
+            padding: 20px;
+            border-radius: 17px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 700px;
+            box-sizing: border-box;
+        }
+        meter {
+            width: 100%;
+            height: 30px;
+        }
+        details {
+            background-color: white;
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 8px;
+        }
+        summary {
+            cursor: pointer;
+            font-weight: bold;
+        }
+        dialog {
+            border: none;
+            border-radius: 15px;
+            padding: 25px;
+            width: 90%;
+            max-width: 400px;
+        }
+        dialog::backdrop {
+            background: rgba(0, 0, 0, 0.6);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+        <h1 style="color: red;">Nokia3310 Telefon Tanıtımı</h1>
+    </div>
+
+    <h2 style="margin-bottom: 16px; margin-right: auto; color: green;">
+        Modern Video Player
+    </h2>
+
+    <div class="player-container" id="videoBox">
+
+        <video id="myVideo"
+               playsinline
+               webkit-playsinline
+               preload="metadata">
+
+            <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"type="video/mp4">
+            <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm"type="video/webm">
+        </video>
+
+        <div class="custom-controls">
+            <div class="timeline-container">
+                <span id="currentTime">00:00</span>
+                <input type="range" id="progressBar"class="progress-bar" value="0" min="0" max="100">
+                <span id="durationTime">00:00</span>
+            </div>
+            <div class="button-group">
+                <div class="left-controls">
+                    <button id="btnPlay">Oynat</button>
+                    <button id="btnMute">Sessize Al</button>
+                </div>
+                <div class="right-controls">
+                    <button id="btnSpeed">1x</button>
+                    <button id="btnFull">Tam Ekran</button>
+                    <button id="btnPip">Pip</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<h2 style="margin-bottom: 16px; margin-right: auto; color: purple;">iFrame Harita ve Video</h2>
+    <div class="iFramecard">
+
+        <iframe
+            class="youtube-video"
+            src="https://www.youtube.com/embed/NL7_cxNE9mg?si=AwAkqfYcsbbjO4Ac" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+            title="YouTube video player"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen>
+        </iframe>
+        <iframe
+            class="map-frame"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63408.7019177056!2d24.603806897265624!3d60.22174080000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x468df69ff687c3b9%3A0x8ca754b752c408b9!2sNokia!5e0!3m2!1str!2str!4v1790032465902!5m2!1str!2str" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></>
+            loading="lazy"
+            referrerpolicy="strict-origin-when-cross-origin">
+        </iframe>
+    </div>
+<h2 style="margin-bottom: 16px; margin-right: auto; color: rgb(10, 175, 21);">Stok Durumu</h2>
+    <div class="stok-card">
+        <p>Mevcut stok: 70 / 100
+            <br>Gayet Yeterli Stok
+        </p>
+        <meter min="0"max="100" value="70">  70% </meter>
+    </div>
+<h2 style="margin-bottom: 16px; margin-right: auto; color: rgb(181, 110, 30);">Sıkça Sorulan Sorular</h2>
+    <div class="sss-card">
+        <details>
+            <summary>Nokia 3310'un bataryası ne kadar dayanır?</summary>
+            <p>Nokia 3310 güçlü bataryası ve düşük pil harcama performansı ile yaklaşık 5-10 iş günü bandında şarjı gidebilir. </p>
+        </details>
+        <details>
+            <summary>Nokia 3310 internete bağlanabilir mi?</summary>
+            <p>Nokia 3310 modeli internete bağlanma özelliği yoktur.</p>
+        </details>
+        <details>
+            <summary>Nokia 3310 neden bu kadar popüler oldu?</summary>
+             <p>Döneminin telefonlarına kıyasla dayanaklı kullanışlı ve fiyat performans bir ürün olduğu için.</p>
+        </details>
+    </div>
+    <h2 sstyle="margin-bottom: 16px; margin-right: auto; color: rgb(10, 175, 21);">Ürün Hakkında Bilgi</h2>
+
+    <div class="info-card">
+        <button id="openDialog">
+            Detaylı Bilgi Al
+        </button>
+    </div>
+
+    <dialog id="productDialog">
+
+        <h2>Nokia 3310 Detayları</h2>
+
+        <p>
+            Nokia 3310 sağlamlığı uzun pil ömrü ve basit kullanıcı deneyimi sayesinde
+            cep telefonu tarihinin en bilinen modellerinden biridir.
+        </p>
+        <button id="closeDialog">
+            Kapat
+        </button>
+    </dialog>
+    <script>
+        const video = document.getElementById('myVideo');
+        const btnPlay = document.getElementById('btnPlay');
+        const btnMute = document.getElementById('btnMute');
+        const btnSpeed = document.getElementById('btnSpeed');
+        const btnFull = document.getElementById('btnFull');
+        const btnPip = document.getElementById('btnPip');
+        const progressBar = document.getElementById('progressBar');
+        const currentTimeEL =
+            document.getElementById('currentTime');
+        const durationTimeEL =
+            document.getElementById('durationTime');
+
+        btnPlay.addEventListener('click', ()=>{
+            if (video.paused) {
+                video.play();
+                btnPlay.innerText = 'Duraklat';
+            } 
+            else {
+                video.pause();
+                btnPlay.innerText = 'Oynat';
+            }
+        });
+        function formatTime(seconds) {const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = Math.floor(seconds % 60);
+            return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+        }
+        video.addEventListener('loadedmetadata',()=>{ 
+            durationTimeEL.innerText = formatTime(video.duration);  
+            }
+        );
+        video.addEventListener('timeupdate',()=>{
+                currentTimeEL.innerText =formatTime(video.currentTime);
+                const progress =(video.currentTime / video.duration) * 100;
+                progressBar.value =isNaN(progress) ? 0 : progress;
+            }
+        );
+        progressBar.addEventListener( 'input',(e)=>{
+                const seekTime =(e.target.value / 100) * video.duration;
+             video.currentTime = seekTime;
+            }
+        );
+        btnMute.addEventListener('click',() => {
+                video.muted = !video.muted;
+                btnMute.innerText =
+                    video.muted
+                    ? 'Sesi Aç'
+                    : 'Sessize Al';
+            }
+        );
+        btnSpeed.addEventListener('click',() =>{
+            const speeds = [0.5, 1, 1.5, 2];
+                let speedIndex = 0;
+                speedIndex = (speedIndex + 1) % speeds.length;
+                video.playbackRate =
+                    speeds[speedIndex];
+                btnSpeed.innerText =
+                    `${speeds[speedIndex]}x`;
+            }
+        );
+        btnFull.addEventListener( 'click',() => {
+          const container =
+              document.getElementById('videoBox');
+          if (!document.fullscreenElement) {
+                  container
+                  .requestFullscreen()
+                 .catch(err => {
+
+                 alert(err.message);
+                  });
+             } 
+             else {
+         document.exitFullscreen();
+           }
+            }
+        );
+        const productDialog =
+            document.getElementById('productDialog');
+     
+        const openDialog =
+            document.getElementById('openDialog');
+        const closeDialog =
+            document.getElementById('closeDialog');
+        openDialog.addEventListener(
+            'click',
+            () => {
+                productDialog.showModal();
+            }
+        );
+        closeDialog.addEventListener(
+            'click',
+            () => {
+                productDialog.close();
+            }
+        );
+    </script>
+
+</body>
+</html>

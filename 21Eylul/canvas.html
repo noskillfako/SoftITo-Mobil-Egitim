@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas Tuvalı</title>
+</head>
+<body style="font-family: sans-serif;padding: 20px;">
+    <h3>HTML5 Tuvaline ilk Fırçamızı Atalım</h3>
+    <canvas id="myTuval" width="320" height="140" style="border: 2px dashed grey; border-radius: 8px;"></canvas>
+
+    <script>
+        const tuval = document.getElementById('myTuval');
+        const firca = tuval.getContext('2d');
+
+        firca.fillStyle = 'blue';
+        firca.fillRect(30, 25, 260, 90);
+
+        firca.fillStyle = '#ffffff';
+        firca.font = 'bold 20px sans-serif';
+        firca.fillText('Merhaba Canvas', 45, 70);
+    </script>
+</body>
+</html>
