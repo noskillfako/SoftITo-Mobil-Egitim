@@ -46,3 +46,10 @@ SQL 3NF kurallarına uygun DDL sorguları yazdık ve HTML'ye giriş
 
 HTML üzerine çalışmalar yapıldı
 
+21-09-2026
+
+iframe,canvas,göstergeler,resim ve video işlemleri
+
+22-09-2026
+
+CSS çalışmaları
