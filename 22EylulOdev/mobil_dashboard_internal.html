@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobil Dashboard</title>
+    <style>
+        *,*::before,*::after{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    }
+            :root {
+    --primary: purple;
+    --primary--dark: cyan;
+    --accent: green;
+    --bg: rgb(77, 81, 132);
+    --surface: rgb(236, 13, 51);
+    --surfacelight: blue;
+    --text: yellow;
+    --text-muted: red;
+    }
+                body{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 10px;
+    }
+    .phone-container{
+    width: 100%;
+    max-width: 420px;
+    background: var(--surface);
+    border-radius: 28px;
+    overflow: hidden;
+    border: 1px solid var(--surfacelight);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+    }
+    .top-bar{
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(0, 0, 0,0.5);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    border-bottom: 1px solid var(--surfacelight);
+    }
+    .user-profile{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    }
+    .avatar{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    }
+    .welcome-text{
+    font-size: 11px;
+    color:var(--text-muted);
+    }
+    .bell-button{
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    }
+    .balance_card{
+    margin: 20px;
+    padding: 24px;
+    background: linear-gradient(135deg,var(--primary),var(--primary--dark));
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 10px 25px rgba(67,56, 202,0.15);
+    }
+    .card-chip-balance{
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: rgb(16, 163, 163);
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+    .balance-title{
+    font-size: 13px;
+    opacity: 0.85;
+    }
+    .balance-num{
+    font-size: 32px;
+    font-weight: 880;
+    letter-spacing: 0.5px;
+    }
+    .iban-text{
+    font-size: 12px;
+    opacity: 0.7;
+    }
+    .quick-actions{
+    display: flex;
+    justify-content: space-around;
+    padding: 0 20px 20px;
+    gap: 8px;
+    }
+    .action-btn{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border:none;
+    color:var(--text);
+    cursor: pointer;
+    font-size: 12px;
+        }
+    .icon_circle{
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    background: var(--surfacelight);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    transition: all 0.2s ease;
+    }
+    .action-btn:hover .icon_circle{
+    background: var(--primary);
+    transform: translateY(-3px);
+        }
+    .tx-section{
+    padding: 0 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+        }
+    .section-tittle{
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-muted);
+    }
+    .tx-item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 16px;
+    background: rgba(255,255,255 ,0.5);
+    border: 1px solid rgba(255,255,255 ,0.2);
+    border-radius: 14px;
+    }
+    .tx-left{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    }
+    .tx-icon{
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: rgba(16, 189, 192,0.5);
+    color: var(--accent);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    }
+    .tx-icon-red{
+    background-color: rgba(244,63,94,0.15);
+    }
+    .tx-icon-green{
+    background: rgba(130, 246, 59,0.15);
+    color: cornflowerblue;
+    }
+    .tx-tittle{
+    font-weight: 600;
+    font-size: 14px;
+    }
+    .tx-date{
+    font-size: 13px;
+    color: var(--text-muted);
+    }
+        .tx-amount{
+    font-weight: 700;
+    font-size: 15px;
+    color:var(--accent);
+    }
+    .tx-amount-negative{
+    color: red;
+    }
+    </style>
+
+</head>
+<body>
+
+    <div class="phone-container">
+        <header class="top-bar">
+            <div class="user-profile">
+                <div class="avatar">AA</div>
+             <div>
+            <p class="welcome-text">Hoş Geldin</p>
+            <strong>Ahmet Aktaş</strong>
+            </div>
+             </div>
+             <button class="bell-button">ZİL</button>
+        </header>
+
+        <section class="balance_card">
+            <span class="card-chip-balance">Platinum</span>
+            <p class="balance-title">Toplam Varlıkları</p>
+            <div class="balance-num">142.850,00 TL</div>
+            <p class="iban-text">IBAN: TR45 0006 5171 ****</p>
+        </section>
+
+        <section class="quick-actions">
+            <button class="action-btn">
+                <div class="icon_circle">↗️</div>
+                <span>Ödemeler</span>
+            </button>
+             <button class="action-btn">
+                <div class="icon_circle">💳</div>
+                <span>Transfer</span>
+            </button>
+             <button class="action-btn">
+                <div class="icon_circle">📈</div>
+                <span>Yatırım</span>
+            </button>
+             <button class="action-btn">
+                <div class="icon_circle">QR</div>
+                <span>Karekod</span>
+            </button>
+        </section>
+
+        <section class="tx-section">
+            <h4 class="section-tittle">Son Hesap Hareketleri</h4>
+            <div class="tx-item">
+                <div class="tx-left">
+                    <div class="tx-icon">💼</div>
+                    <div>
+                        <div class="tx-tittle">Eğitim Hakedişi</div>
+                        <div class="tx-date">Bugün,14:30 Havale</div>
+                    </div>
+                </div>
+                <div class="tx-amount">+130.000TL</div>
+            </div>
+             <div class="tx-item">
+                <div class="tx-left">
+                    <div class="tx-icon tx-icon-red">💼</div>
+                    <div>
+                        <div class="tx-tittle">Kredi Ödemesi</div>
+                        <div class="tx-date">Bugün,17:30 Havale</div>
+                    </div>
+                </div>
+                <div class="tx-amount-negative">-30.000TL</div>
+            </div>
+             <div class="tx-item">
+                <div class="tx-left">
+                    <div class="tx-icon tx-icon-green">💼</div>
+                    <div>
+                        <div class="tx-tittle">Restoran Ücreti</div>
+                        <div class="tx-date">Bugün,19:30 QR</div>
+                    </div>
+                </div>
+                <div class="tx-amount-negative">-20.000TL</div>
+            </div>
+        </section>
+    </div>
+    
+</body>
+</html>
+
+

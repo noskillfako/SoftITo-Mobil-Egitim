@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS3 Seçici ve Değişkenler</title>
+    <style>
+    /*1.Global CSS Değişkenler*/
+    :root{
+        --brand-primary: red;
+        --brand-accent: white;
+        --bg-surface: cyan;
+        --text-main: black;
+        --radius-md: 12px;
+    }
+    /*Dark Mode Hazırlığı*/
+    @media(prefers-color-scheme: dark){
+        :root{
+            --bg-surface: black;
+            --text-main: white;
+        }
+
+    }
+    body{
+        font-family: 'Courier New', Courier, monospace;
+        background-color: rgb(174, 179, 179);
+        color:var(--text-main);
+        padding: 24px;
+
+
+    }
+
+    /*0,0,0,1=1 puan*/
+    button{
+        background-color: bisque;
+        color: white;
+        padding: 12px 24px;
+        border: none;
+        border-radius: var(--radius-md);
+        font-size: 16px;
+        cursor: pointer;
+    }
+    /*0,0,1,0*/
+    .btn-action{
+        background-color: var(--brand-primary);
+
+    }
+    /*0,0,1,1*/
+    button.btn-action{
+        box-shadow: 0px 4 px 14px rgb(2 ,13 ,300,  0.5);
+    }
+
+    /*0,1,0,0*/
+    #submit-btn{
+        background: linear-gradient(135deg,var(--brand-primary),var(--brand-accent));
+    }
+    .btn-action:hover{
+        transform:translateY(-2px);
+        filter:brightness(1.1);
+
+    }
+    .btn-action:Active{
+        transform: translateY(0);
+    }
+
+    </style>
+</head>
+<body style="background-color: purple  !important;">
+    <h2>CSS DEĞİŞKENLER</h2>
+    <button id="submit-btn" class="btn-action">İşlemi Onayla</button>
+</body>
+</html>
