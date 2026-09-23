@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoftITo ev CMS Portal</title>
+    <style>
+        *,*::before::after{
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+        }
+        body{
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            background: black;
+            color: white;
+        }
+        .portal-shell{
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            grid-template-rows: 60px 1fr 40px;
+            grid-template-areas: "nav header"
+            "nav main"
+            "nav footer";
+            height: 100vh;
+            gap: 12px;
+            padding: 12px;
+        }
+        .panel{
+            background: #1e1e11;
+            border: 1px solid #2724;
+            border-radius: 12px;
+            padding: 12px 20px;
+        }
+        header{
+            grid-area: header;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #1e1e11;
+        }
+        nav{
+            grid-area: nav;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            background: #121314;
+        }
+        main{
+            grid-area: main;
+            background: #121314;
+            overflow-y: auto;
+        }
+        footer{
+            grid-area: footer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            color: grey;
+        }
+        .menu-item{
+            padding: 9px 18px;
+            border-radius: 8px;
+            background: transparent;
+            cursor: pointer;
+            color: grey;
+            transition: all 0.15s ease;
+        }
+        .menu-item:hover{
+            background: black;
+            color: white;
+        }
+        .menu-item:active{
+            background: #272672;
+            font-weight: 680;
+            color: white;
+            border: 1px solid #3f3f3f
+        }
+    </style>
+
+</head>
+<body>
+    <div class="portal-shell">
+        <header class="panel">
+            <strong>SoftITo Panel</strong>
+            <span style="font-size: 13px; color: yellow;"> 
+                Oturum:Selahaddin Ç.(admin)
+            </span>
+        </header>
+        <nav class="panel">
+            <div style="font-size: 11px;font-weight: 700;color: gray;letter-spacing: 0.8px;">
+            Navigasyon
+            </div>
+            <div class="menu-item active">Dashboard</div>
+            <div class="menu-item">İstasyon ve Soketler</div>
+            <div class="menu-item">EPDK Bildirimleri</div>
+            <div class="menu-item">Fatura ve Gelirler</div>
+        </nav>
+        <main class="panel">
+            <h2 style="font-size: 20px;font-weight: 700;letter-spacing: -0.5px;">İki Boyutlu Alan Yönetimi</h2>
+            <p style="color: #a1a1aa;margin-top: 8px;line-height: 1.6;">grid-template-areas sayesinde html sırasından bağımsız çalışır</p>
+        </main>
+        <footer class="panel">SoftITo 4.Dönem Mobil Eğitim</footer>
+    </div>
+</body>
+</html>

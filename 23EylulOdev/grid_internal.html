@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Grid Paneli</title>
+
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+        }
+        :root {
+            --bg: black;
+            --card-bg: gray;
+            --border: pink;
+            --text: white;
+            --text-muted: rgb(62, 56, 56);
+            --accent: orange;
+            --success: cyan;
+        }
+        body {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding: 30px 20px;
+        }
+        h1 {
+            margin-top: 24px;
+            margin-bottom: 24px;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text);
+            text-align: center;
+            letter-spacing: -0.5px;
+        }
+        .metric-grid {
+            display: grid;
+
+            /* Ekran genişliğine göre kartları otomatik sığdırır */
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+
+            gap: 18px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .metric-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 22px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            min-height: 160px;
+
+            transition: all 0.2s ease;
+        }
+        .metric-card:hover {
+            transform: translateY(-4px);
+            border-color: #3f3446;
+            box-shadow: 0 12px 20px -8px rgba(0, 0, 0, 0.5);
+        }
+        .card-label {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+        .card-num {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--text);
+            margin: 8px 0;
+            letter-spacing: -1px;
+        }
+        .card-growth {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--success);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .card-growth.warning {
+            color: var(--accent);
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Akıllı CSS Metrik Paneli (auto-fit + minmax)</h1>
+    <div class="metric-grid">
+        <div class="metric-card">
+            <span class="card-label">
+                Anlık Şarj İstasyonu
+            </span>
+            <div class="card-num">
+                125 Soket
+            </div>
+            <span class="card-growth">
+                %92.4 Doluluk
+            </span>
+        </div>
+        <div class="metric-card">
+            <span class="card-label">  Bugünkü Tüketim</span>
+            <div class="card-num"> 4.850 kWh</div>
+            <span class="card-growth">%12 Dünden Fazla</span>
+        </div>
+        <div class="metric-card">
+            <span class="card-label">
+                GİB EŞU Bildirimi
+            </span>
+            <div class="card-num">
+                0 Hata
+            </div>
+            <span class="card-growth warning">
+                Şu Anda Onaylı
+            </span>
+        </div>
+        <div class="metric-card">
+            <span class="card-label">
+                Ortalama Şarj Süresi
+            </span>
+            <div class="card-num">
+                36.5 Dakika
+            </div>
+            <span class="card-growth">
+                120 kW DC Hızlı Şarj
+            </span>
+        </div>
+    </div>
+
+</body>
+</html>

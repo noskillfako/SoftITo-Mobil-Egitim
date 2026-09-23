@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kitap Okuma Platformu</title>
+    <style>
+    *,
+    *::before,
+    *::after{
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+    }
+
+    :root{
+        --bg: #17130f;
+        --surface: #241e18;
+        --surface-hover: #30271f;
+        --border: #4a3c30;
+        --text: #f7f0e7;
+        --text-muted: #aaa097;
+        --accent: #d99a5b;
+        --accent-dark: #a76b36;
+        --success: #65b891;
+        --glass-bg: rgba(255,255,255,0.08);
+        --skeleton: #342c25;
+        --skeleton-light: #4a4036;
+    }
+
+    body{
+        font-family: Georgia, 'Times New Roman', Times, serif;
+        min-height: 100vh;
+        background:
+        radial-gradient(circle at 10% 20%, rgba(217,154,91,0.14), transparent 30%),
+        radial-gradient(circle at 90% 70%, rgba(101,184,145,0.10), transparent 30%),
+        var(--bg);
+        color: var(--text);
+        padding: 20px;
+    }
+
+    .header{
+        max-width: 1180px;
+        margin: 0 auto 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .logo{
+        font-size: 20px;
+        font-weight: 800;
+        color: var(--accent);
+    }
+
+    .online-badge{
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 11px;
+        color: var(--text-muted);
+        border: 1px solid var(--border);
+        border-radius: 99px;
+        padding: 7px 10px;
+        background: var(--surface);
+    }
+
+    .pulse-dot{
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--success);
+        animation: pulseAnim 2s infinite;
+    }
+
+    @keyframes pulseAnim{
+        0%,100%{
+            opacity: 1;
+            transform: scale(1);
+        }
+        50%{
+            opacity: 0.4;
+            transform: scale(1.5);
+        }
+    }
+
+    main{
+        max-width: 1180px;
+        margin: 0 auto;
+    }
+
+    .hero{
+        text-align: center;
+        max-width: 760px;
+        margin: 0 auto 60px;
+    }
+
+    .hero-label{
+        color: var(--accent);
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        margin-bottom: 12px;
+        font-weight: 700;
+    }
+
+    h1{
+        font-size: clamp(2rem,5vw,4rem);
+        line-height: 1.1;
+        margin-bottom: 18px;
+    }
+
+    .hero-description{
+        color: var(--text-muted);
+        line-height: 1.7;
+        font-size: 15px;
+    }
+
+    .popular-section,
+    .recommend-section,
+    .reading-section,
+    .loading-section{
+        margin-bottom: 60px;
+    }
+
+    .section-header{
+        margin-bottom: 20px;
+    }
+
+    .section-header h2{
+        font-size: 22px;
+        margin-bottom: 6px;
+    }
+
+    .section-header span{
+        color: var(--text-muted);
+        font-size: 13px;
+    }
+
+    .book-grid{
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .book-card{
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 16px;
+        transition: transform 0.25s ease,box-shadow 0.25s ease,border-color 0.25s ease,background-color 0.25s ease;
+    }
+
+    .book-card:hover{
+        transform: translateY(-6px);
+        box-shadow: 0 18px 35px rgba(0,0,0,0.35);
+        border-color: var(--accent);
+        background: var(--surface-hover);
+    }
+
+    .book-cover{
+        min-height: 240px;
+        border-radius: 12px;
+        background: linear-gradient(145deg,var(--accent-dark),var(--accent));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 20px;
+        font-size: 25px;
+        font-weight: 800;
+        letter-spacing: 1px;
+        color: white;
+        margin-bottom: 18px;
+    }
+
+    .book-card:nth-child(2) .book-cover{
+        background: linear-gradient(145deg,#4d4731,#978b50);
+    }
+
+    .book-card:nth-child(3) .book-cover{
+        background: linear-gradient(145deg,#31566b,#6c9ab3);
+    }
+
+    .book-card:nth-child(4) .book-cover{
+        background: linear-gradient(145deg,#633933,#a86458);
+    }
+
+    .book-category{
+        display: inline-block;
+        font-size: 11px;
+        color: var(--accent);
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.7px;
+        font-weight: 700;
+    }
+
+    .book-info h3{
+        font-size: 19px;
+        margin-bottom: 6px;
+    }
+
+    .book-info p{
+        color: var(--text-muted);
+        font-size: 14px;
+        margin-bottom: 12px;
+    }
+
+    .book-rating{
+        color: var(--accent);
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .reading-card{
+        background: var(--glass-bg);
+        border: 1px solid rgba(255,255,255,0.15);
+        border-radius: 20px;
+        padding: 28px;
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        box-shadow: 0 16px 40px rgba(0,0,0,0.25);
+    }
+
+    .reading-label{
+        display: inline-block;
+        color: var(--accent);
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 12px;
+        font-weight: 700;
+    }
+
+    .reading-content h2{
+        font-size: 28px;
+        margin-bottom: 6px;
+    }
+
+    .reading-content p{
+        color: var(--text-muted);
+        margin-bottom: 24px;
+    }
+
+    .progress-info{
+        display: flex;
+        justify-content: space-between;
+        font-size: 13px;
+        margin-bottom: 9px;
+    }
+
+    .progress-bar{
+        width: 100%;
+        height: 9px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 99px;
+        overflow: hidden;
+    }
+
+    .progress-value{
+        width: 68%;
+        height: 100%;
+        background: var(--accent);
+        border-radius: 99px;
+    }
+
+    .skeleton-grid{
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .skeleton-card{
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 16px;
+        overflow: hidden;
+    }
+
+    .skeleton-cover,
+    .skeleton-line{
+        position: relative;
+        overflow: hidden;
+        background: var(--skeleton);
+    }
+
+    .skeleton-cover{
+        height: 220px;
+        border-radius: 12px;
+        margin-bottom: 18px;
+    }
+
+    .skeleton-line{
+        height: 14px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+    }
+
+    .skeleton-title{
+        width: 70%;
+    }
+
+    .skeleton-text{
+        width: 45%;
+    }
+
+    .skeleton-cover::after,
+    .skeleton-line::after{
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg,transparent,var(--skeleton-light),transparent);
+        animation: skeletonAnim 1.5s infinite;
+    }
+
+    @keyframes skeletonAnim{
+        0%{
+            left: -100%;
+        }
+        100%{
+            left: 100%;
+        }
+    }
+
+    .footer{
+        max-width: 1180px;
+        margin: 20px auto 0;
+        padding: 24px 0;
+        border-top: 1px solid var(--border);
+        text-align: center;
+        color: var(--text-muted);
+        font-size: 12px;
+    }
+
+    @media(min-width: 768px){
+        body{
+            padding: 28px;
+        }
+
+        .book-grid{
+            grid-template-columns: repeat(2,1fr);
+        }
+
+        .skeleton-grid{
+            grid-template-columns: repeat(2,1fr);
+        }
+
+        .reading-card{
+            padding: 38px;
+        }
+    }
+
+    @media(min-width: 1024px){
+        .book-grid{
+            grid-template-columns: repeat(4,1fr);
+        }
+
+        .recommend-section .book-grid{
+            grid-template-columns: repeat(3,1fr);
+        }
+
+        .skeleton-grid{
+            grid-template-columns: repeat(3,1fr);
+        }
+
+        body{
+            padding: 36px;
+        }
+    }
+</style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            KitapEvi
+        </div>
+        <div class="online-badge">
+            <span class="pulse-dot"></span>
+            <span>1.764 Çevrimiçi Okuyucu</span>
+        </div>
+    </header>
+    <main>
+        <section class="hero">
+            <h1>Bir sonraki favori kitabını keşfet</h1>
+            <p class="hero-description">
+                Yeni hikayeler keşfet
+            </p>
+        </section>
+        <section class="popular-section">
+            <div class="section-header">
+                <h2>Popüler Kitaplar</h2>
+                <span>Bu hafta en çok okunanlar</span>
+            </div>
+
+            <div class="book-grid">
+                <article class="book-card">
+                    <div class="book-cover">
+                        <span>1984</span>
+                    </div>
+                    <div class="book-info">
+                        <span class="book-category">Distopya</span>
+                        <h3>1984</h3>
+                        <p>George Orwell</p>
+                        <div class="book-rating">★ 4.8</div>
+                    </div>
+                </article>
+
+                <article class="book-card">
+                    <div class="book-cover">
+                        <span>DUNE</span>
+                    </div>
+                    <div class="book-info">
+                        <span class="book-category">Bilim Kurgu</span>
+                        <h3>Dune</h3>
+                        <p>Frank Herbert</p>
+                        <div class="book-rating">★ 4.7</div>
+                    </div>
+                </article>
+
+                <article class="book-card">
+                    <div class="book-cover">
+                        <span>SİMYACI</span>
+                    </div>
+                    <div class="book-info">
+                        <span class="book-category">Roman</span>
+                        <h3>Simyacı</h3>
+                        <p>Paulo Coelho</p>
+                        <div class="book-rating">★ 4.6</div>
+                    </div>
+                </article>
+
+                <article class="book-card">
+                    <div class="book-cover">
+                        <span>FAHRENHEİT 451</span>
+                    </div>
+                    <div class="book-info">
+                        <span class="book-category">Distopya</span>
+                        <h3>Fahrenheit 451</h3>
+                        <p>Ray Bradbury</p>
+                        <div class="book-rating">★ 4.2</div>
+                    </div>
+                </article>
+            </div>
+
+        </section>
+        <section class="reading-section">
+            <div class="reading-card">
+                <div class="reading-content">
+                    <span class="reading-label">Şu An Okuyorsun</span>
+                    <h2>Suç ve Ceza</h2>
+                    <p>Fyodor Dostoyevski</p>
+
+                    <div class="progress-info">
+                        <span>Okuma ilerlemesi</span>
+                        <span>%68</span>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div class="progress-value"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="recommend-section">
+            <div class="section-header">
+                <h2>Senin İçin Öneriler</h2>
+                <span>Okuma geçmişine göre seçildi</span>
+            </div>
+
+            <div class="book-grid">
+                <article class="book-card">
+                    <div class="book-cover">
+                        <span>KÜÇÜK PRENS</span>
+                    </div>
+                    <div class="book-info">
+                        <span class="book-category">Klasik</span>
+                        <h3>Küçük Prens</h3>
+                        <p>Antoine de Saint-Exupéry</p>
+                        <div class="book-rating">★ 4.9</div>
+                    </div>
+                </article>
+
+                <article class="book-card">
+                    <div class="book-cover">
+                        <span>HAYVAN ÇİFTLİĞİ</span>
+                    </div>
+                    <div class="book-info">
+                        <span class="book-category">Distopya</span>
+                        <h3>Hayvan Çiftliği</h3>
+                        <p>George Orwell</p>
+                        <div class="book-rating">★ 4.7</div>
+                    </div>
+                </article>
+
+                <article class="book-card">
+                    <div class="book-cover">
+                        <span>YABANCI</span>
+                    </div>
+                    <div class="book-info">
+                        <span class="book-category">Roman</span>
+                        <h3>Yabancı</h3>
+                        <p>Albert Camus</p>
+                        <div class="book-rating">★ 4.6</div>
+                    </div>
+                </article>
+            </div>
+        </section>
+         <section class="loading-section">
+            <div class="section-header">
+                <h2>Çok Yakında!!!</h2>
+            </div>
+
+            <div class="skeleton-grid">
+                <div class="skeleton-card">
+                    <div class="skeleton-cover"></div>
+                    <div class="skeleton-line skeleton-title"></div>
+                    <div class="skeleton-line skeleton-text"></div>
+                </div>
+
+                <div class="skeleton-card">
+                    <div class="skeleton-cover"></div>
+                    <div class="skeleton-line skeleton-title"></div>
+                    <div class="skeleton-line skeleton-text"></div>
+                </div>
+
+                <div class="skeleton-card">
+                    <div class="skeleton-cover"></div>
+                    <div class="skeleton-line skeleton-title"></div>
+                    <div class="skeleton-line skeleton-text"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>BookNest • Mobile First Responsive CSS Grid</p>
+    </footer>
+
+       
+</body>
+</html>

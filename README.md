@@ -53,3 +53,7 @@ iframe,canvas,göstergeler,resim ve video işlemleri
 22-09-2026
 
 CSS çalışmaları
+
+23-09-2026
+
+Grind üstüne ve animasyon üzerine CSS çalışmaları
