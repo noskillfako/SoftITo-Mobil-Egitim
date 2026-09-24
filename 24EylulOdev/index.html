@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+    /*
+    const kacdakiadasarj = (mevcutyuzde, hedefyuzde, bataryakw, istasyonkw) => {//değişekn tanımlanması
+    const sarjyakw = bataryakw <= istasyonkw ? bataryakw : istasyonkw;//sorugya göre değer atama
+    const kacdakika = ((hedefyuzde - mevcutyuzde) / sarjyakw) * 60;
+    return kacdakika;
+}
+
+const sonuc = kacdakiadasarj(20, 80, 60, 50);
+console.log(sonuc+"dk");
+*/
+/*
+const kacdakiadasarj = (mevcutyuzde, hedefyuzde, bataryacesid, istasyonkw,) => {//bu sefer bataryayı cesidli hale getiriyoruz
+   let bataryakw
+
+    if(bataryacesid==="A"){
+     bataryakw=20;
+   }
+   else if(bataryacesid==="B"){     ///Batarya türünü seçeriz
+     bataryakw=40;
+   }
+   else if(bataryacesid==="C"){
+     bataryakw=80;
+   }
+    const sarjyakw = bataryakw <= istasyonkw ? bataryakw : istasyonkw;
+    const kacdakika = ((hedefyuzde - mevcutyuzde) / sarjyakw) * 60;
+    return kacdakika;
+} 
+    const sonuc = kacdakiadasarj(20, 80, B, 50);
+    console.log(sonuc +"dk");
+
+*/
+
+const kacdakiadasarj = (mevcutyuzde, hedefyuzde, bataryacesid, istasyonkw,gunsaat,otoparkbaslangıcucret,otoparksaatbasıucret) => {
+   let bataryakw;
+   let elektrikucret;
+   
+    if(bataryacesid==="A"){
+     bataryakw=20;
+        elektrikucret=1
+   }
+   else if(bataryacesid==="B"){     ///Batarya türünü ve elektri ücreti seçeriz
+     bataryakw=40;
+     elektrikucret=1.2
+   }
+   else if(bataryacesid==="C"){
+     bataryakw=80;
+     elektrikucret=1.4
+   }
+   
+    const sarjyakw = bataryakw <= istasyonkw ? bataryakw : istasyonkw;
+    const saat=((hedefyuzde - mevcutyuzde) / sarjyakw);
+    const kacdakika = saat * 60;
+    let ucret=0;
+    for(let i=0;i<saat;i++){
+        if(gunsaat+i<=12){
+            ucret+=otoparksaatbasıucret //7-24 otopark gecelik tarifesi %70 oranında
+        }
+        else{
+            ucret+=otoparksaatbasıucret*0.7
+        }
+    }
+    const totalelektrikucret=kacdakika*elektrikucret;
+    const tutar=otoparkbaslangıcucret+ucret+totalelektrikucret;
+    return tutar;
+} 
+    const sonuc = kacdakiadasarj(20, 80, "B", 50,10,100,10);
+    console.log(sonuc +"tl");
+
+
+
+</script>
+</body>
+</html>

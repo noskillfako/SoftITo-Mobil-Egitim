@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+    /*if(true){
+        var tehlikeliSayi=999;
+
+    }
+    console.log("var sızdı mı?",tehlikeliSayi);
+
+    if(true){
+        let guvenliSayi=14;
+        const PI=3.1453;
+        console.log("oda içi",guvenliSayi,PI);
+
+    }
+
+    const API_URL="https://www.kodusta.com/v1";
+    console.log(API_URL);
+
+    const arac={marka:"TOGG",model:"TX10"};
+    console.log(arac);*/
+
+        //VERİ TİPLERİ VE DÖNÜŞÜMÜ
+        /*
+        const isim="Furkan"; //string
+        const bataryaKapasite=88.5; //int&float
+        const sarjTamamlandı=false; //boolean
+        let sonrakiRandevu; //undefined
+        const servisNotu=null; //NULL bilinçli
+        const büyükSayi=453543535345; //Bigint
+        const gizliAnahtar=Symbol("id"); //Sembol
+
+        console.log(typeof isim);
+        console.log(typeof bataryaKapasite);
+        console.log(typeof sarjTamamlandı);
+        console.log(typeof sonrakiRandevu);
+        console.log(typeof servisNotu);
+        console.log(typeof büyükSayi);
+        console.log(typeof gizliAnahtar);
+        
+        //Otomatik tip çevrimi
+        console.log("5"+2);
+        console.log("5"-2);
+        console.log("5"*"4");
+        console.log("beş"*2);
+        
+        console.log(typeof NaN);
+        console.log(NaN===NaN);
+        console.log(Number.isNaN(NaN));
+
+            //Manuel Dönüştürme(Profesyonel Yol)
+            const stringFiyat="1473.33";
+            const sayiFiyat=Number(stringFiyat);
+            const pixelDegeri=parseInt("480px",10);
+            const metinSayi=String(2026);
+
+            console.log(stringFiyat);
+            console.log(sayiFiyat);
+            console.log(pixelDegeri);
+            console.log(metinSayi); 
+
+            //Katı Eşitlik
+            //Neden her zaman === eşittir kullanmalıyız
+            console.log(5=="5");
+            console.log(5==="5");
+            console.log(0==false);
+            console.log(0===false);
+
+
+            
+
+            //Tempplate Literals
+            const kullanici="Ahmet Aga";
+            const bakiye=1000;
+            const harcama=10000;
+
+            const eskimesaj="Sayın "+kullanici+"Güncel bakiyeniz"+(bakiye-harcama)+"TL'dir";
+            console.log(eskimesaj);
+
+            const modernMesaj=`Sayın ${kullanici}, Bugünkü harcama: ${harcama}, kalan bakiye: ${bakiye - harcama}`;
+            console.log(modernMesaj);
+            
+
+            const bataryaSevyesi=14;
+            const istasyonUygunmu=true;
+            const bakiye=450;
+            const minimumgirisTutarı=250;
+            if(!istasyonUygunmu){
+                console.log("İstasyon şuanda servis dışı veya meşgul");
+            }
+            else if(bakiye<minimumgirisTutarı){
+                console.log("Bakiye yetersiz")
+            }
+            else if(bataryaSevyesi<=20){
+                console.log("Kritik seviye şarj");
+            }
+            else{
+                console.log("Standar şarj başlatılabilir");
+            }
+
+            
+           const kullaniciGirdisi = 0;
+        if (kullaniciGirdisi) {
+                console.log("Girdi dolu");
+        } else {
+                console.log("Girdi Boş");
+            }
+
+            const soketDurumu = "uygun";
+            const durumMesaji = soketDurumu === "uygun" ? "Soket boşta" : "Soket kullanımda";
+            console.log(durumMesaji);
+            
+           //arrow function
+           function toplaKlasik(sayi1,sayi2){
+            return sayi1+sayi2;
+           }
+           //moderrn function
+           const toplaModern=(sayi1,sayi2)=>{
+            return sayi1+sayi2;
+           }
+           //tek satırlık bir kodsa
+           const toplaKısa=(sayi1,sayi2)=>sayi1+sayi2;
+
+           //tek parametreli
+           const karesiniAl=sayi1=>sayi1*sayi1;
+
+           const profilUret=(ad,rol)=>({
+            ad:ad,
+            rol:rol,
+            kayıtTarihi:2026,
+           });
+           console.log("Toplama Sonucu",toplaModern(15,27));
+           console.log(karesiniAl(6));
+           console.log(profilUret("Ahmet","Ogrenci"));
+            */
+           /*
+           const kacdakiadasarj=(mevcutyuzde,hedefyuzde,bataryakw,istasyonkw)=>({
+            mevcutyuzde:mevcutyuzde,
+            hedefyuzde:hedefyuzde,
+            bataryakw:bataryakw,
+            istasyonkw:istasyonkw,
+           })
+           if(bataryakw<=istasyonkw){
+            const kacdakika=((hedefyuzde-mevcutyuzde)*100/bataryakw)*60
+            console.log(kacdakika + "dk");
+           }
+           else{
+            const kacdakika=((hedefyuzde-mevcutyuzde)*100/istasyonkw)*60
+            console.log(kacdakika + "dk");
+           }
+            */
+</script>
+    
+</body>
+</html>

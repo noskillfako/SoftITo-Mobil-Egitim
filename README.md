@@ -57,3 +57,6 @@ CSS çalışmaları
 23-09-2026
 
 Grind üstüne ve animasyon üzerine CSS çalışmaları
+
+24-09-2026
+CSS bitti javasprict çalışmaları
