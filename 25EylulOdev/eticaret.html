@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Mağaza</title>
+    <style>
+        :root {
+            --bg: #f8f7f4;
+            --card: #ffffff;
+            --border: #e6e5df;
+            --text: #181716;
+            --muted: #6b6963;
+            --clay: #c85a32;
+            --clay-hover: #b04e29;
+            --danger: #ef4444;
+            --font-main: 'Plus Jakarta Sans', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: var(--bg); color: var(--text); font-family: var(--font-main); line-height: 1.5; }
+        .wrap { max-width: 1040px; margin: 0 auto; padding: 24px 16px 48px; }
+
+        
+        .topbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-bottom: 16px; margin-bottom: 20px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+        .brand-tag { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--clay); font-weight: 700; }
+        .brand-title { font-size: 26px; font-weight: 700; }
+        .top-actions { display: flex; align-items: center; gap: 14px; }
+        .switch { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--muted); cursor: pointer; }
+
+        
+        .btn { background: var(--clay); color: #fff; border: none; padding: 9px 14px; font-size: 13px; font-weight: 600; font-family: inherit; border-radius: 6px; cursor: pointer; }
+        .btn:hover { background: var(--clay-hover); }
+        .btn:disabled { background: var(--border); color: var(--muted); cursor: not-allowed; }
+        .btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+        .btn-ghost:hover { background: var(--bg); }
+        .btn-sm { padding: 4px 8px; font-size: 11px; border-radius: 4px; }
+        .btn-danger:hover { background: var(--danger); color: #fff; border-color: var(--danger); }
+        .cart-count { background: #fff; color: var(--clay); font-family: var(--font-mono); font-size: 11px; padding: 1px 6px; border-radius: 10px; margin-left: 6px; }
+
+        
+        .panel { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 18px; margin-bottom: 20px; }
+        .panel h4 { font-size: 15px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; align-items: end; }
+        .field label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; }
+        .field input, .field select, .filter-bar input, .filter-bar select { width: 100%; padding: 8px 10px; font-size: 13px; font-family: inherit; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; }
+        .field input:focus, .field select:focus, .filter-bar input:focus, .filter-bar select:focus { outline: none; border-color: var(--clay); background: #fff; }
+        .form-actions { display: flex; gap: 8px; }
+        .hidden { display: none !important; }
+
+        
+        .filter-bar { display: flex; gap: 10px; margin-bottom: 16px; }
+        .filter-bar select { width: 170px; }
+
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+        .product { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 8px; }
+        .product-img { background: var(--bg); border-radius: 8px; height: 110px; display: flex; align-items: center; justify-content: center; font-size: 52px; }
+        .product h5 { font-size: 14px; font-weight: 600; }
+        .product-row { display: flex; justify-content: space-between; align-items: center; }
+        .price { font-family: var(--font-mono); font-weight: 700; font-size: 15px; }
+        .stock { font-size: 11px; color: var(--muted); }
+        .stock.low { color: var(--danger); font-weight: 600; }
+        .badge { font-size: 11px; padding: 2px 7px; border-radius: 4px; font-weight: 600; font-family: var(--font-mono); background: #fef3c7; color: #92400e; }
+        .badge--elektronik { background: #e0e7ff; color: #3730a3; }
+        .badge--giyim { background: #fce7f3; color: #9d174d; }
+        .badge--ev { background: #d1fae5; color: #065f46; }
+        .admin-actions { display: flex; gap: 6px; padding-top: 8px; border-top: 1px dashed var(--border); }
+        .empty { grid-column: 1 / -1; text-align: center; padding: 32px; color: var(--muted); font-size: 13px; }
+
+        
+        .overlay { position: fixed; inset: 0; background: rgba(0,0,0,.35); z-index: 10; }
+        .drawer { position: fixed; top: 0; right: 0; height: 100%; width: min(380px, 100%); background: var(--card); z-index: 11; display: flex; flex-direction: column; padding: 18px; box-shadow: -4px 0 20px rgba(0,0,0,.1); }
+        .drawer-head { display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; border-bottom: 1px solid var(--border); margin-bottom: 10px; }
+        .cart-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; gap: 8px; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 10px; }
+        .cart-item h5 { font-size: 13px; }
+        .cart-item p { font-size: 12px; color: var(--muted); }
+        .qty { display: flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 13px; }
+        .cart-foot { border-top: 1px solid var(--border); padding-top: 12px; margin-top: 10px; }
+        .total-row { display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 10px; }
+        .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--text); color: #fff; padding: 10px 16px; border-radius: 6px; font-size: 13px; z-index: 20; }
+    </style>
+</head>
+<body>
+<div class="wrap">
+
+    <header class="topbar">
+        <div>
+            <span class="brand-tag">Online Alışveriş</span>
+            <h1 class="brand-title">Mini Mağaza</h1>
+        </div>
+        <div class="top-actions">
+            <label class="switch">
+                <input type="checkbox" id="adminToggle"> Yönetim Modu
+            </label>
+            <button class="btn" id="openCart">Sepet <span class="cart-count" id="cartCount">0</span></button>
+        </div>
+    </header>
+
+    
+    <section class="panel hidden" id="adminPanel">
+        <h4 id="formTitle">Yeni Ürün Ekle</h4>
+        <form id="productForm" class="form-grid">
+            <div class="field">
+                <label for="pName">Ürün Adı</label>
+                <input type="text" id="pName" placeholder="Kablosuz Kulaklık" required>
+            </div>
+            <div class="field">
+                <label for="pCat">Kategori</label>
+                <select id="pCat">
+                    <option value="Elektronik">Elektronik</option>
+                    <option value="Giyim">Giyim</option>
+                    <option value="Ev">Ev</option>
+                </select>
+            </div>
+            <div class="field">
+                <label for="pPrice">Fiyat (TL)</label>
+                <input type="number" id="pPrice" value="500" min="1" step="1" required>
+            </div>
+            <div class="field">
+                <label for="pStock">Stok</label>
+                <input type="number" id="pStock" value="10" min="0" step="1" required>
+            </div>
+            <div class="field">
+                <label for="pEmoji">Simge (emoji)</label>
+                <input type="text" id="pEmoji" value="📦" maxlength="4">
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn" id="submitBtn">Ürünü Kaydet</button>
+                <button type="button" class="btn btn-ghost hidden" id="cancelEdit">İptal</button>
+            </div>
+        </form>
+    </section>
+
+   
+    <div class="filter-bar">
+        <input type="text" id="searchInput" placeholder="Ürün ara...">
+        <select id="categoryFilter">
+            <option value="ALL">Tüm Kategoriler</option>
+            <option value="Elektronik">Elektronik</option>
+            <option value="Giyim">Giyim</option>
+            <option value="Ev">Ev</option>
+        </select>
+    </div>
+
+    
+    <main class="grid" id="productGrid"></main>
+</div>
+
+
+<div class="overlay hidden" id="overlay"></div>
+<aside class="drawer hidden" id="drawer">
+    <div class="drawer-head">
+        <h4>Sepetim</h4>
+        <button class="btn btn-ghost btn-sm" id="closeCart">Kapat</button>
+    </div>
+    <div class="cart-list" id="cartList"></div>
+    <div class="cart-foot">
+        <div class="total-row"><span>Toplam</span><span id="cartTotal">0 tl</span></div>
+        <button class="btn" style="width:100%" id="checkoutBtn">Siparişi Tamamla</button>
+    </div>
+</aside>
+
+<script>
+    const STORAGE_KEY = "mini-magaza-v1";
+
+    const defaultProducts = [
+        { id: 1, name: "Kablosuz Kulaklık", category: "Elektronik", price: 1250, stock: 12, emoji: "🎧" },
+        { id: 2, name: "Akıllı Saat", category: "Elektronik", price: 2900, stock: 5, emoji: "⌚" },
+        { id: 3, name: "Pamuklu Tişört", category: "Giyim", price: 350, stock: 30, emoji: "👕" },
+        { id: 4, name: "Kot Pantolon", category: "Giyim", price: 800, stock: 3, emoji: "👖" },
+        { id: 5, name: "Seramik Kupa", category: "Ev", price: 120, stock: 40, emoji: "☕" },
+        { id: 6, name: "Masa Lambası", category: "Ev", price: 450, stock: 0, emoji: "💡" },
+    ];
+
+    let products = [];
+    let cart = {};            
+    let nextId = 1;
+    let editingId = null;     
+    let adminMode = false;
+
+    const loadState = () => {
+        try {
+            const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+            if (saved && Array.isArray(saved.products)) {
+                products = saved.products;
+                cart = saved.cart || {};
+                return;
+            }
+        } catch (err) {}
+        products = defaultProducts.map(p => ({ ...p }));
+        cart = {};
+    };
+
+    const saveState = () => {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({ products, cart }));
+        } catch (err) {}
+    };
+
+    loadState();
+    nextId = products.reduce((max, p) => Math.max(max, p.id), 0) + 1;
+
+    const $ = (id) => document.getElementById(id);
+    const productGrid = $("productGrid"), searchInput = $("searchInput"), categoryFilter = $("categoryFilter");
+    const adminToggle = $("adminToggle"), adminPanel = $("adminPanel");
+    const productForm = $("productForm"), formTitle = $("formTitle"), submitBtn = $("submitBtn"), cancelBtn = $("cancelEdit");
+    const nameInput = $("pName"), catInput = $("pCat"), priceInput = $("pPrice"), stockInput = $("pStock"), emojiInput = $("pEmoji");
+    const cartCount = $("cartCount"), cartList = $("cartList"), cartTotal = $("cartTotal");
+    const drawer = $("drawer"), overlay = $("overlay");
+
+    const fmt = (n) => `${n.toLocaleString("tr-TR")} tl`;
+
+    const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+    const badgeClassFor = (category) => {
+        if (category === "Elektronik") return "badge--elektronik";
+        if (category === "Giyim") return "badge--giyim";
+        return "badge--ev";
+    };
+
+    const showToast = (msg) => {
+        const t = document.createElement("div");
+        t.className = "toast";
+        t.textContent = msg;
+        document.body.appendChild(t);
+        setTimeout(() => t.remove(), 1800);
+    };
+
+    const renderProducts = () => {
+        const term = searchInput.value.toLocaleLowerCase("tr-TR").trim();
+        const selectedCat = categoryFilter.value;
+
+        const filtered = products.filter(p =>
+            p.name.toLocaleLowerCase("tr-TR").includes(term) &&
+            (selectedCat === "ALL" || p.category === selectedCat)
+        );
+
+        if (filtered.length === 0) {
+            productGrid.innerHTML = `<div class="empty">Kriterlere uygun ürün bulunamadı</div>`;
+            return;
+        }
+
+        productGrid.innerHTML = filtered.map(p => {
+            const inCart = cart[p.id] || 0;
+            const soldOut = p.stock === 0;
+            const maxed = inCart >= p.stock;
+            return `
+            <article class="product" data-id="${p.id}">
+                <div class="product-img">${esc(p.emoji)}</div>
+                <div class="product-row">
+                    <h5>${esc(p.name)}</h5>
+                    <span class="badge ${badgeClassFor(p.category)}">${esc(p.category)}</span>
+                </div>
+                <div class="product-row">
+                    <span class="price">${fmt(p.price)}</span>
+                    <span class="stock ${p.stock <= 3 ? "low" : ""}">${soldOut ? "Tükendi" : `Stok: ${p.stock}`}</span>
+                </div>
+                <button class="btn" data-action="add" ${maxed ? "disabled" : ""}>${soldOut ? "Tükendi" : maxed ? "Stok sınırında" : "Sepete Ekle"}</button>
+                ${adminMode ? `
+                <div class="admin-actions">
+                    <button class="btn btn-ghost btn-sm" data-action="edit" style="color:var(--clay);border-color:var(--clay);">Düzenle</button>
+                    <button class="btn btn-ghost btn-sm btn-danger" data-action="delete">Sil</button>
+                </div>` : ""}
+            </article>`;
+        }).join("");
+    };
+
+    const renderCart = () => {
+        const items = Object.entries(cart)
+            .map(([id, qty]) => ({ product: products.find(p => p.id === Number(id)), qty }))
+            .filter(i => i.product);
+
+        const totalQty = items.reduce((a, i) => a + i.qty, 0);
+        const total = items.reduce((a, i) => a + i.qty * i.product.price, 0);
+
+        cartCount.textContent = totalQty;
+        cartTotal.textContent = fmt(total);
+        $("checkoutBtn").disabled = items.length === 0;
+
+        if (items.length === 0) {
+            cartList.innerHTML = `<div class="empty">Sepetiniz boş</div>`;
+            return;
+        }
+
+        cartList.innerHTML = items.map(({ product: p, qty }) => `
+            <div class="cart-item" data-id="${p.id}">
+                <div>
+                    <h5>${esc(p.emoji)} ${esc(p.name)}</h5>
+                    <p>${fmt(p.price)} × ${qty} = ${fmt(p.price * qty)}</p>
+                </div>
+                <div class="qty">
+                    <button class="btn btn-ghost btn-sm" data-action="dec">−</button>
+                    ${qty}
+                    <button class="btn btn-ghost btn-sm" data-action="inc" ${qty >= p.stock ? "disabled" : ""}>+</button>
+                    <button class="btn btn-ghost btn-sm btn-danger" data-action="remove">✕</button>
+                </div>
+            </div>`).join("");
+    };
+
+    const renderAll = () => {
+        renderProducts();
+        renderCart();
+        saveState();
+    };
+
+    const resetFormToAddMode = () => {
+        editingId = null;
+        productForm.reset();
+        formTitle.textContent = "Yeni Ürün Ekle";
+        submitBtn.textContent = "Ürünü Kaydet";
+        cancelBtn.classList.add("hidden");
+    };
+
+    productForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const name = nameInput.value.trim();
+        const category = catInput.value;
+        const price = Number(priceInput.value);
+        const stock = Math.max(0, Math.floor(Number(stockInput.value)));
+        const emoji = emojiInput.value.trim() || "📦";
+
+        if (!name || !(price > 0) || Number.isNaN(stock)) return;
+
+        if (editingId === null) {
+            products.push({ id: nextId++, name, category, price, stock, emoji });
+            showToast("Ürün eklendi");
+        } else {
+            const target = products.find(p => p.id === editingId);
+            if (target) {
+                Object.assign(target, { name, category, price, stock, emoji });
+                if (cart[target.id] > stock) {
+                    if (stock === 0) delete cart[target.id]; else cart[target.id] = stock;
+                }
+            }
+            showToast("Ürün güncellendi");
+        }
+
+        resetFormToAddMode();
+        renderAll();
+    });
+
+    cancelBtn.addEventListener("click", resetFormToAddMode);
+
+    productGrid.addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-action]");
+        if (!btn) return;
+        const id = Number(btn.closest(".product").dataset.id);
+        const product = products.find(p => p.id === id);
+        if (!product) return;
+
+        if (btn.dataset.action === "add") {
+            if ((cart[id] || 0) < product.stock) {
+                cart[id] = (cart[id] || 0) + 1;
+                showToast(`${product.name} sepete eklendi`);
+                renderAll();
+            }
+        }
+
+        if (btn.dataset.action === "edit") {
+            editingId = id;
+            nameInput.value = product.name;
+            catInput.value = product.category;
+            priceInput.value = product.price;
+            stockInput.value = product.stock;
+            emojiInput.value = product.emoji;
+            formTitle.textContent = "Ürünü Düzenle";
+            submitBtn.textContent = "Güncelle";
+            cancelBtn.classList.remove("hidden");
+            adminPanel.scrollIntoView({ behavior: "smooth" });
+            nameInput.focus();
+        }
+
+        if (btn.dataset.action === "delete") {
+            if (!confirm(`"${product.name}" silinsin mi?`)) return;
+            products = products.filter(p => p.id !== id);
+            delete cart[id];
+            if (editingId === id) resetFormToAddMode();
+            renderAll();
+        }
+    });
+
+    $("cartList").addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-action]");
+        if (!btn) return;
+        const id = Number(btn.closest(".cart-item").dataset.id);
+        const product = products.find(p => p.id === id);
+        if (!product) return;
+
+        if (btn.dataset.action === "inc" && cart[id] < product.stock) cart[id]++;
+        if (btn.dataset.action === "dec") { cart[id]--; if (cart[id] <= 0) delete cart[id]; }
+        if (btn.dataset.action === "remove") delete cart[id];
+        renderAll();
+    });
+
+    $("checkoutBtn").addEventListener("click", () => {
+        Object.entries(cart).forEach(([id, qty]) => {
+            const p = products.find(p => p.id === Number(id));
+            if (p) p.stock = Math.max(0, p.stock - qty);
+        });
+        cart = {};
+        closeDrawer();
+        renderAll();
+        showToast("Siparişiniz alındı, teşekkürler!");
+    });
+
+    const openDrawer = () => { drawer.classList.remove("hidden"); overlay.classList.remove("hidden"); };
+    const closeDrawer = () => { drawer.classList.add("hidden"); overlay.classList.add("hidden"); };
+    $("openCart").addEventListener("click", openDrawer);
+    $("closeCart").addEventListener("click", closeDrawer);
+    overlay.addEventListener("click", closeDrawer);
+
+   
+    adminToggle.addEventListener("change", () => {
+        adminMode = adminToggle.checked;
+        adminPanel.classList.toggle("hidden", !adminMode);
+        if (!adminMode) resetFormToAddMode();
+        renderProducts();
+    });
+
+    searchInput.addEventListener("input", renderProducts);
+    categoryFilter.addEventListener("change", renderProducts);
+
+    renderAll();
+</script>
+</body>
+</html>

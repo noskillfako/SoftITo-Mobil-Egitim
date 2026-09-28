@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sipariş & Gelir Dashboard</title>
+    <style>
+        :root { /*renk tonlarını işlevsel olması açısından root fonksiyonun içine yazıyoruz böylece rengi bir kere belirleyip istediğimiz yerde kullanabiliyoruz*/
+      --bg: #f8f7f4;
+      --card: #ffffff;
+      --border: #e6e5df;
+      --text: #181716;
+      --muted: #6b6963;
+      --clay: #c85a32;
+      --clay-hover: #b04e29;
+      --font-main: 'Plus Jakarta Sans', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+/*bir elementin padding ve border değerleini belirtilen widthin içine dahil eder böylece genişlik hesapalrı karışmaz*/
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    /*Sayfanın arka plan rengi, yazı rengi, fontu, kenar boşlukları (üst-alt 36px, sağ-sol 16px) ve satır aralığı.*/
+    body { background: var(--bg); color: var(--text); font-family: var(--font-main); padding: 36px 16px; line-height: 1.5; }
+    /*İçeriği maksimum 960px genişlikte tutar ve margin: 0 auto ile yatayda ortalar.*/
+    .kokpit { max-width: 960px; margin: 0 auto; }
+    /*Başlık bölümünün altına boşluk ve ince bir ayraç çizgisi ekler.*/
+    .header { margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+    /*Sipariş Takip yazısının rengi kalınlığı stili*/
+    .header-tag { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--clay); font-weight: 700; }
+    /*Sipariş Yönetim Kokpiti Başlığı font büyüklüğü ve hizalanması*/
+    .header-title { font-size: 26px; font-weight: 700; margin-top: 2px; }
+
+    /*3 sütünlü bir ızgara oluşturur aralarında 14px boşluk bırakır ve kart içeriğini burayar yazar*/
+    .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 24px; }
+    /*Kart görünümü için beyaz renk ince kenar ve yuvarlatılmış köşe*/
+    .kpi-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 14px 18px; }
+    /*Span içeriği*/
+    .kpi-card span { font-size: 12px; color: var(--muted); font-weight: 600; }
+    .kpi-card h3 { font-size: 22px; font-weight: 700; font-family: var(--font-mono); margin-top: 4px; }
+
+    /*Ana içeriği 2 farklı ekrana böler sol taraf 320px ,sağ taraf tüm alanı kaplar aralarındaki boşluk 14pxdir*/
+    .layout { display: grid; grid-template-columns: 320px 1fr; gap: 24px; }
+    /*ekran genişliği 768pxden küçük ise eğer hem layout hem de grid tek sütüna döner bu da sayfayı responsive hale getirir*/
+    @media (max-width: 768px) { .layout, .kpi-grid { grid-template-columns: 1fr; } }
+
+    /*Hem form hem liste kutusunun ortak kart görünümü.*/
+    .panel { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 20px; }
+    .panel h4 { font-size: 15px; font-weight: 700; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+
+    /*Her form alanının altına boşluk*/
+    .field { margin-bottom: 12px; }
+    /*Labelerin kendi satırlarında görünmesi ve kalın olmaları*/
+    .field label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; }
+    /*Input ve select kutularına tam genişlik iç boşluk yazı tipi arka plan ve ince kenar vermesi*/
+    .field input, .field select { width: 100%; padding: 8px 10px; font-size: 13px; font-family: inherit; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; }
+    /*Kullanıcı bir kutuya tıkladığında varsayılan pencere kaldırılır yerine turuncu kenarlık ve beyaz arkaplan gelir*/
+    .field input:focus, .field select:focus { outline: none; border-color: var(--clay); background: #fff; }
+
+    /*"Siparişi Kaydet" butonunun stili; cursor: pointer fare üzerine gelince el işareti gösterir; :hover ile üzerine gelince rengi koyulaşır.*/
+    .btn-submit { width: 100%; background: var(--clay); color: #fff; border: none; padding: 10px; font-size: 13px; font-weight: 600; border-radius: 6px; cursor: pointer; margin-top: 6px; }
+    .btn-submit:hover { background: var(--clay-hover); }
+
+    /*display:flex kısmı arama kutusu ile kategori filtresini yanyana dizer aralarında 10px boşluk*/
+    .filter-bar { display: flex; gap: 10px; margin-bottom: 14px; }
+    
+    /*Her sipariş satırının kutusu. display: flex + justify-content: space-between ile içindeki iki blok (ürün bilgisi ve butonlar) kutunun iki ucuna yaslanır. align-items: center dikey olarak ortalar.*/
+    .order-item { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 12px 14px; display: flex; justify-content: space-between; align-items: center; }
+    /*orderitem sınıfdındaki h5 boyutundaki başlığın size ve kalınlık ayarları*/
+    .order-item h5 { font-size: 13px; font-weight: 600; }
+    /*orderitem sınıfındaki p satırının renk ve yazı ayarları*/
+    .order-item p { font-size: 12px; color: var(--muted); }
+
+    /*Kategori etiketi ile Düzenle/Sil butonlarını yan yana, dikeyde ortalanmış şekilde dizer.*/
+    .meta-box { display: flex; align-items: center; gap: 10px; }
+    /*.badge temel etiketi alttaki mobilya aydınlatma ve sermaik sınıflarına özel renkler verip ortak görünüm veriyor*/
+    .badge { font-size: 11px; padding: 2px 7px; border-radius: 4px; font-weight: 600; background: #fef3c7; color: #92400e; font-family: var(--font-mono); }
+    .badge--mobilya { background: #e0e7ff; color: #3730a3; }
+    .badge--aydinlatma { background: #fef3c7; color: #b45309; }
+    .badge--seramik { background: #d1fae5; color: #065f46; }
+
+    /*Sil ve Düzenle efektlerinin ortak temel stili hoverla da üstüne gelince kırmızıya dönmesi sağlanıyor*/
+    .btn-del { background: transparent; border: 1px solid var(--border); color: var(--muted); font-size: 11px; padding: 4px 8px; border-radius: 4px; cursor: pointer; }
+    .btn-del:hover { background: #ef4444; color: #fff; border-color: #ef4444; }
+    </style>
+</head>
+<body>
+    <div class="kokpit">
+        /*Sayfanın üst etiket ve ana başlıkları*/
+        <header class="header">
+            <span class="header-tag">Sipariş takip</span>
+            <h1 class="header-title">Sipariş Yönetim Kokpiti</h1>
+        </header>
+
+        /*Sipariş Yönetim kısmının altında bulunan kayıtlısipariş-toplamsipariş tutarı-ortalama sipariş tutarı gibi başlıklarıın yazıldığı yer*/
+        <section class="kpi-grid">
+            <div class="kpi-card">
+                <span>Kayıtlı Sipariş</span>
+                <h3 id="kpiCount">0</h3>
+            </div>
+            <div class="kpi-card">
+                <span>Toplam Sipariş Tutarı</span>
+                <h3 id="kpiTotal">0</h3>
+            </div>
+            <div class="kpi-card">
+                <span>Ortalama Sipariş Tutarı</span>
+                <h3 id="kpiAvg">0</h3>
+            </div>
+        </section>
+
+
+        <main class="layout">
+            /*Sol orta kısımda bulunan yeni sipariş kaydının yazıldığı yer*/
+            <section class="panel">
+                <h4>Yeni Sipariş Kaydı</h4>
+                <form id="orderForm">
+                    <div class="field">
+                        /*En başta çıkan ürün adı kısmı*/
+                        <label for="prodName">Ürün Adı</label>
+                        /*placeholder boşlukta sehpa yazmasını sağlıyor*/
+                        <input type="text" id="prodName" placeholder="Sehpa" required>
+                    </div>
+                    <div class="field">
+                        /*Kategori kısmı */
+                        <label for="prodCat">Kategori</label>
+                        <select name="prodCat" id="prodCat">
+                            <option value="Mobilya">Mobilya</option>
+                            <option value="Aydınlatma">Aydınlatma</option>
+                            <option value="Mutfak">Mutfak</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        /*Fiyat kısmı*/
+                        <label for="prodPrice">Fiyat</label>
+                        /*Başlangıç değeri 3250 minimum değer 100 yüz ve 50 artacak veya azalacak şekilde gidiyor*/
+                        <input type="number" id="prodPrice" value="3250" min="100" step="50" required>
+                    </div>
+                    /*Siparişi kaydet kısmı siparişi güncellemek istediğimizde güncelle olarak değişir*/
+                    <button type="submit" class="btn-submit">Siparişi Kaydet</button>
+                    /*Siparişi düzenlemek istediğimizde çıkan iptal butonudur normalde display:none sayesinde gözükmez*/
+                    <button type="button" id="cancelEdit" class="btn-submit" style="background:transparent;color:var(--muted);border:1px solid var(--border);display:none;">İptal</button>
+                </form>
+            </section>
+            /*Sağ taraftaki kategoriler kısmıdır*/
+            <section class="panel">
+                <div class="filter-bar">
+                    /*ürün dına göre filtreleme kısmı*/
+                    <input type="text" id="searchInput" class="field"
+                    style="margin-bottom: 0;" placeholder="Ürün adına göre filtrele">
+                    <select id="categoryFilter" style="width: 130px;font-size: 12px;padding: 6px;">
+                        /*value değeri all olduğu için tüm değerleri kapsıyor böylece hem mobilya hem aydınlatma hem de muftak siparişlerini gösteriyor*/
+                        <option value="ALL">Tüm Kategoriler</option>
+                        <option value="Mobilya">Mobilya</option>
+                        <option value="Aydınlatma">Aydınlatma</option>
+                        <option value="Mutfak">Mutfak</option>
+                    </select>
+                </div>
+                /*Başlangıçta boş olan bu div javascript tarafından her renderorders() çağrısında dolduruluyor*/
+                <div id="orderContainer"></div>
+            </section>
+        </main>
+    </div>
+    <script>
+        /*Uygulamanın veritabanı gibi düşünebileceğin dizi (array). Her eleman bir sipariş nesnesi (object) — id, name, category, price alanları var. 
+        let ile tanımlandı çünkü elke sil düzenle özelliklerinden ötürü değişim halinde*/
+        let orders = [
+            {id:1,name:"Sehpa",category:"Mobilya",price:6500},
+            {id:2,name:"Abajür",category:"Aydınlatma",price:6500},
+            {id:3,name:"Koltuk",category:"Mobilya",price:6500},
+            {id:4,name:"Bulaşık Makinesi",category:"Mutfak",price:6500},
+            {id:5,name:"Ocak",category:"Mutfak",price:6500},
+        ];
+        /*Yeni eklenecek siparişin id numarısını artırıyor*/
+        let nextId = orders.length + 1;
+        /*Uygulamanın idyi değiştirip değiştirmeyeciğini belirliyor sipariş düzenlendiği zaman yeni bir id değeri olmuyor*/
+        let editingId = null; // null: ekleme modu, sayı: düzenleme modu
+
+        /*HTML'de o id'ye sahip elementi bulup JavaScript'e bağlar 
+        Bunları her seferinde tekrar aramak yerine bir kere bulup bir değişkende (const) saklamak için*/
+        const orderContainer = document.getElementById('orderContainer');
+        const orderForm = document.getElementById('orderForm');
+        const searchInput = document.getElementById('searchInput');
+        const categoryFilter = document.getElementById('categoryFilter');
+        const kpiCount = document.getElementById('kpiCount');
+        const kpiTotal = document.getElementById('kpiTotal');
+        const kpiAvg = document.getElementById('kpiAvg');
+        const submitBtn = orderForm.querySelector('.btn-submit');
+        const cancelBtn = document.getElementById('cancelEdit');
+        const nameInput = document.getElementById('prodName');
+        const catInput = document.getElementById('prodCat');
+        const priceInput = document.getElementById('prodPrice');
+
+        /*const updateKpis → fonksiyonu bir değişkene atıyoruz
+        (datalist) => { ... } → arrow function sözdizimi datalist parametresi hesaplamanın yapılacağı sipariş dizisidir*/
+        const updateKpis = (datalist) => {
+            /*.lenght eleman sayısını verir .textContent HTMLnin içindeki yazıyı değiştirir*/
+            kpiCount.textContent = datalist.length;
+            /*Liste boşsa direkt 0 yazılır */
+            if (datalist.length === 0) {
+                kpiTotal.textContent = "0 tl";
+                kpiAvg.textContent = "0 tl";
+                return;
+            }
+            /*reduce, bir diziyi tek bir değere indirger burada tüm fiyatları toplamak için kullanılıyor
+            acc (accumulator) → o ana kadarki toplam
+            curr → sırası gelen sipariş nesnesi
+            acc + curr.price → toplama o siparişin fiyatını ekler
+            0 → başlangıç değeri (toplam sıfırdan başlar*/
+            const total = datalist.reduce((acc, curr) => acc + curr.price, 0);
+            /*Backtick (`) içindeki ${...} template literal'dir içine değişken/ifade yerleştirmeni sağlar
+            toLocaleString("tr-TR") sayıyı Türkiye biçimine çevirir: 19500 → 19.500 (binlik ayracı nokta) sonuna " tl" eklenip "Toplam Sipariş Tutarı" kartına yazılır*/
+            kpiTotal.textContent = `${total.toLocaleString("tr-TR")} tl`;
+            /*Ortalama = toplam ÷ sipariş sayısı*/
+            const avg = total / datalist.length;
+            /*math.round(avg) ortalamayı en yakın tam sayıya yuvarlar .toLocaleStringde("tr-TR") satısı Türkçe biçimine çevirip sonuna 'tl' ekler*/
+            kpiAvg.textContent = `${Math.round(avg).toLocaleString("tr-TR")} tl`;
+        };
+
+        /*category parametresi olarak bir kategori metni alan arrow function tanımlar*/
+        const badgeClassFor = (category) => {
+            /*Kategori maobilya ise badge--mobilya döndürür*/
+            if (category === "Mobilya") return "badge--mobilya";
+            /*Kategori aydınlatma ise badge-aydınlatma döndürür*/
+            if (category === "Aydınlatma") return "badge--aydinlatma";
+            /*Geriye mutfak kategorisi kaldığı için mutfak kategorisi döndürür lakin yeni bir kategori eklenirse yeniden düzenlemesi gerekir*/
+            return "badge--seramik";
+        };
+
+        /*searchInput.value arama kutusuna yazılan metni alır
+        .toLowerCase() hepsini küçük harfe çevirir, böylece "sehpa" yazınca "Sehpa" da bulunur
+        .trim() baştaki ve sondaki boşlukları siler
+        selectedCat kategori filtresinin seçili değeridir*/
+        const renderOrders = () => {
+            const term = searchInput.value.toLowerCase().trim();
+            const selectedCat = categoryFilter.value;
+
+            /*.filter() diziyi tek tek gezer ve true döndüren elemanlardan yeni bir dizi oluşturur orders değişmez
+            includes(term) ürün adının aranan metni içerip içermediğine bakar
+            matchesCategory ya "Tüm Kategoriler" seçilidir ya da siparişin kategorisi seçilenle aynıdır
+            matchesName && matchesCategory sipariş listeye ancak iki koşul birden doğruysa girer*/
+            const filtered = orders.filter(order => {
+                const matchesName = order.name.toLowerCase().includes(term);
+                const matchesCategory = selectedCat === "ALL" || order.category === selectedCat;
+                return matchesName && matchesCategory;
+            });
+
+            /*Kapsayıcının içini boşaltır*/
+            orderContainer.innerHTML = "";
+
+            /*Filtre hiçbir sipariş bırakmadıysa ortalanmış soluk bir "Kriterlere Uygun Bulunamadı" yazısı basılır
+            updateKpis([]) KPI'ları boş listeyle sıfırlar, return da fonksiyonu burada bitirir*/
+            if (filtered.length === 0) {
+                orderContainer.innerHTML = `
+                <div style="padding: 24px;text-align:center;color:var(--muted);font-size:12px;">
+                    Kriterlere Uygun Bulunamadı
+                </div>`;
+                updateKpis([]);
+                return;
+            }
+
+            /*forEach filtrelenmiş listedeki her sipariş için içindeki kodu bir kez çalıştırır
+            createElement("article") bellekte yeni bir <article> elementi yaratır. Henüz sayfada görünmez
+            className = "order-item" ona CSS class'ını verir
+            setAttribute("data-id", order.id) elemente data-id="3" gibi bir öznitelik ekler Silme ve düzenleme butonları bu id sayesinde hangi siparişe tıklandığını anlar (dataset.id ile okunuyor)*/
+            filtered.forEach(order => {
+                const item = document.createElement("article");
+                item.className = "order-item";
+                item.setAttribute("data-id", order.id);
+
+            /*Uygun renk classını alır*/
+                const badgeClass = badgeClassFor(order.category);
+
+                /*Kartın iç HTML'ini şablon metniyle (template literal) yazar 
+                ${...} yerlerine siparişin gerçek değerleri girer 
+                Sol blokta ürün adı ve fiyat, sağ blokta kategori etiketi ile iki buton var 
+                Butonlardaki data-action="edit" ve data-action="delete"
+                sonraki tıklama dinleyicisinin hangi butona basıldığını ayırt etmesini sağlar*/
+                item.innerHTML = `
+                <div>
+                    <h5>${order.name}</h5>
+                    <p>Birim Fiyatı: ${order.price.toLocaleString("tr-TR")} tl</p>
+                </div>
+                <div class="meta-box">
+                    <span class="badge ${badgeClass}">${order.category}</span>
+                    <button class="btn-del" data-action="edit" style="color:var(--clay);border-color:var(--clay);">Düzenle</button>
+                    <button class="btn-del" data-action="delete">Sil</button>
+                </div>`;
+                /*Hazırlanan kartı sayfadaki kapsayıcının sonuna ekler ancak bu satırda kart ekranda görünür hale gelir*/
+                orderContainer.appendChild(item);
+            });
+
+            /*KPI kartları filtrelenmiş listeye göre hesaplanır*/
+            updateKpis(filtered);
+        };
+
+        /*editingId = null; uygulamayı ekleme moduna alır artık form gönderildiğinde yeni sipariş oluşur mevcut biri güncellenmez
+        orderForm.reset(); formdaki tüm alanları HTML'deki başlangıç değerlerine döndürür: ürün adı boşalır, kategori ilk seçeneğe döner fiyat value="3250" değerine geçer
+        priceInput.value = 3250; fiyatı bir kez daha elle 3250 yapar
+        submitBtn.textContent = "Siparişi Kaydet" düzenleme sırasında "Güncelle" olan buton yazısını eski haline getirir
+        cancelBtn.style.display = "none" iptal butonunu tekrar gizler*/
+        const resetFormToAddMode = () => {
+            editingId = null;
+            orderForm.reset();
+            priceInput.value = 3250;
+            submitBtn.textContent = "Siparişi Kaydet";
+            cancelBtn.style.display = "none";
+        };
+
+        /*addEventListener bir elemente olay dinleyici ekler "form gönderildiğinde şu fonksiyonu çalıştır" e olay nesnesidir olayla ilgili bilgi ve kontrol metotlarını taşır*/
+        orderForm.addEventListener("submit", (e) => {
+            /*Formun varsayılan davranışını engeller*/
+            e.preventDefault();
+            /*Form alanlarındaki değerleri okur trim() baştaki ve sondaki boşlukları siler Number(...) input'tan gelen metni sayıya çevirir*/
+            const name = nameInput.value.trim();
+            const category = catInput.value;
+            const price = Number(priceInput.value);
+
+            /*Ad boşsa veya fiyat 0 ise fonksiyondan çıkar kayıt yapmaz*/
+            if (!name || !price) return;
+
+            /*push diziye yeni bir nesne ekler id nextid değerini alır nextid 1 artırılır*/
+            if (editingId === null) {
+                orders.push({ id: nextId++, name, category, price });
+            } else {
+            /*push modunda değil de düzenle modundaysak id kısmında herhangi bir değişiklik olmaz sadece isim kategori ve ücret değişebilir*/
+                const target = orders.find(o => o.id === editingId);
+                if (target) {
+                    target.name = name;
+                    target.category = category;
+                    target.price = price;
+                }
+            }
+
+            /*İşlem bitince form başlangıç haline döner ve liste yeniden çizilerek değişiklik ekranda görünür*/
+            resetFormToAddMode();
+            renderOrders();
+        });
+
+        /*İptale basınca resetFormToAddMode çalışır*/
+        cancelBtn.addEventListener("click", resetFormToAddMode);
+
+        /*renderOrders fonksiyonunda butonlar silip tekrar oluşturuluyordu bunun yerine orderContainer ile kapsayıcıya bağlıyoruz*/
+        orderContainer.addEventListener("click", (e) => {
+            /*e.target tam olarak tıklanan elementtir
+    closest(...) o elementten başlayıp yukarı doğru gidip seçiciyle eşleşen en yakın elementi bulur eşleşme yoksa null döner
+    [data-action="delete"] bir öznitelik seçicisidir data-action değeri delete olan elementi ara aynı şey data-action=edit iiçinde geçerlidir*/
+            const delBtn = e.target.closest('[data-action="delete"]');
+            const editBtn = e.target.closest('[data-action="edit"]');
+
+            /*delBtn.closest(".order-item") butondan yukarı çıkıp siparişin kartını (<article>) bulur
+            .dataset.id o kartta data-id="3" diye yazdığımız değeri okur*/
+            if (delBtn) {
+                const id = Number(delBtn.closest(".order-item").dataset.id);
+                /*id'si silinecek olandan farklı olan tüm siparişleri tutarak yeni bir dizi oluşturur*/
+                orders = orders.filter(o => o.id !== id);
+                /*Düzenlenmekte olan sipariş silindiyse formu ekleme moduna dönüştürür*/
+                if (editingId === id) resetFormToAddMode();
+                /*Listeyi yeniden çizer return fonksiyonu bitirir böylece aşağıdaki düzenleme kısmına inilmez*/
+                renderOrders();
+                return;
+            }
+
+            /*Aynı yöntemle tıklanan kartın id'sini alır find ile o siparişi bulur bulunamazsa (!target) çıkar*/
+            if (editBtn) {
+                const id = Number(editBtn.closest(".order-item").dataset.id);
+                const target = orders.find(o => o.id === id);
+                if (!target) return;
+
+                /*Uygulamayı düzenleme moduna alır*/
+                editingId = id;
+                /*Siparişin mevcut bilgilerini form alanlarına doldurur*/
+                nameInput.value = target.name;
+                catInput.value = target.category;
+                priceInput.value = target.price;
+                /*Ana buton yazısı "Güncelle" olur
+                İptal butonu görünür olur
+                focus() imleci ürün adı kutusuna koyar, kullanıcı hemen yazmaya başlayabilir*/
+                submitBtn.textContent = "Güncelle";
+                cancelBtn.style.display = "block";
+                nameInput.focus();
+            }
+        });
+
+        /*"input" olayı arama kutusunda her tuş vuruşunda tetiklenir
+        "change" olayı <select>'te seçim değiştiğinde tetiklenir.
+        En alttaki renderOrders(); sayfa ilk açıldığında listeyi ve KPI'ları bir kez çizer*/
+        searchInput.addEventListener("input", renderOrders);
+        categoryFilter.addEventListener("change", renderOrders);
+        renderOrders();
+    </script>
+</body>
+</html>
