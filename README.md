@@ -59,4 +59,17 @@ CSS çalışmaları
 Grind üstüne ve animasyon üzerine CSS çalışmaları
 
 24-09-2026
+
 CSS bitti javasprict çalışmaları
+
+25-09-2026
+JavaSprict üzerine çalışmalar sayfaya girdi ekleme düzenleme ve çıkarma
+
+28-09-2026
+Dart'a giriş 
+
+29-09-2026
+Dart dinamikleri üzerine çalışmalar
+
+30-09-2026
+Son ders );
