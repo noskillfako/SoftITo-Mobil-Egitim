@@ -1,0 +1,31 @@
+name: test3
+description: "16 Ekim - Film Arşivim Projesi"
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.12.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # iOS tarzı ikonlar için
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # Kod kalitesi için önerilen kurallar
+  flutter_lints: ^6.0.0
+
+flutter:
+  # Material ikonlarını kullanmak için gerekli
+  uses-material-design: true
+
+  # --- İleride resim eklemek istersen burayı açacaksın ---
+  # assets:
+  #   - assets/images/
+  #   - assets/images/poster1.jpg

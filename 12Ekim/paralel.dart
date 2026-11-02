@@ -17,6 +17,7 @@ Future<void> fecthDashBoardaData() async{
 //Stream:Bir boru hattı şeklinde çalışır(pipe),zaman içinde 1-10-1000 veya sonsuz sayıda veri aktarımı yapılabilir
 //(Borsa fiyatları çekerken GPS konumgüncelleme Firebase canlı dinleme)
 
+//asenkron programlaam için bütün fonksiyon ve sınıfları dahil eder
 import 'dart:async';
 
 void main(){
@@ -28,14 +29,19 @@ void main(){
     onError: (error)=>print("Hata geldi: $error"),
     onDone: ()=>print("Yayın kapandı"),
   );
+  //streame veri gönderme fonksiyonu
   controller.sink.add(10);
   controller.sink.add(20);
   controller.sink.add(30);
 
+//controller streami brodcaste çevirme fonksiyonu
   final broadcastStream=controller.stream.asBroadcastStream();
+  //UI Ekranı adında listener ekleme
   broadcastStream.listen((d)=>print("UI Ekranı: $d"));
+  //Analitik Servis Ekranı adında listener ekleme
   broadcastStream.listen((d)=>print("Analitik Servisi Ekranı: $d"));
 
+//controller'kapatma
   controller.close();
 
 
