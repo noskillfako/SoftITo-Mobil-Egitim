@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import '../models/asset_model.dart';
 import '../models/transation_model.dart';
 
-class MarketsGridListScreen extends StatelessWidget {
-  const MarketsGridListScreen({super.key});
+class MarketsGridListScreen extends StatelessWidget {//extend widgetli class
+  const MarketsGridListScreen({super.key});//super key
 
   // ============================================================
   // VARLIKLAR (Asset Listesi)
   // ============================================================
-  static const List<Asset> assets = [
+  static const List<Asset> assets = [//asste list tanımları
     Asset(
       symbol: 'BTC',
       name: 'Bitcoin',
@@ -35,9 +35,9 @@ class MarketsGridListScreen extends StatelessWidget {
   // ============================================================
   // İŞLEMLER (Transaction Listesi) - 4 ADET
   // ============================================================
-  static const List<TransactionItem> transactions = [
+  static const List<TransactionItem> transactions = [//işlem
     // 1. İşlem - Teknoloji
-    TransactionItem(
+    TransactionItem(//tanım
       id: 'tx_1',
       title: 'Apple Store',
       category: 'Teknoloji',
@@ -48,7 +48,7 @@ class MarketsGridListScreen extends StatelessWidget {
     ),
 
     // 2. İşlem - Kurumsal Gelir
-    TransactionItem(
+    TransactionItem(//tanım
       id: 'tx_2',
       title: 'Kodusta Danışmanlık Hakediş',
       category: 'Kurumsal Gelir',
@@ -59,7 +59,7 @@ class MarketsGridListScreen extends StatelessWidget {
     ),
 
     // 3. İşlem (DEĞİŞTİRİLDİ) - Market
-    TransactionItem(
+    TransactionItem(//tanım
       id: 'tx_3',
       title: 'Migros Alışveriş',
       category: 'Gıda & Market',
@@ -70,7 +70,7 @@ class MarketsGridListScreen extends StatelessWidget {
     ),
 
     // 4. İşlem (YENİ EKLENDİ) - Kahve
-    TransactionItem(
+    TransactionItem(//tanım
       id: 'tx_4',
       title: 'Starbucks Coffee',
       category: 'Yemek & İçecek',
@@ -81,50 +81,50 @@ class MarketsGridListScreen extends StatelessWidget {
     ),
   ];
 
-  @override
+  @override//ezme
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC),
-      appBar: AppBar(
-        title: const Text(
+    return Scaffold(//iskelet
+      backgroundColor: const Color(0xFFF8FAFC),//arkaplan renk
+      appBar: AppBar(//appbar
+        title: const Text(//title text işlemleri
           'Piyasalar & İşlemler',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        elevation: 0,
+        centerTitle: true,//ortalama
+        backgroundColor: Colors.white,//renk
+        elevation: 0,//gölge 0
         actions: [
           IconButton(
-            icon: const Icon(Icons.search_outlined),
-            onPressed: () {},
+            icon: const Icon(Icons.search_outlined),//ıkon
+            onPressed: () {},//tıklandığında
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        padding: const EdgeInsets.only(bottom: 32),
+      body: SingleChildScrollView(//kaydırma
+        physics: const BouncingScrollPhysics(),//fizik
+        padding: const EdgeInsets.only(bottom: 32),//alttan 32 px iç boşluk
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,//soldan başlangıç
           children: [
             // ---- Piyasa Özeti Başlığı
-            _buildSectionHeader(
+            _buildSectionHeader(//header
               title: 'Piyasa Özeti',
-              subtitle: '${assets.length} varlık',
+              subtitle: '${assets.length} varlık',//asstes uzunluk
             ),
 
             // ---- Varlık Grid'i
             _buildAssetsGrid(),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: 24),//boşluk 24px
 
             // ---- İşlemler Başlığı
-            _buildSectionHeader(
+            _buildSectionHeader(//işlemler başlığı
               title: 'Son İşlemler',
               subtitle: '${transactions.length} işlem',
             ),
 
             // ---- İşlem Listesi
-            _buildTransactionsList(),
+            _buildTransactionsList(),//işlem list
           ],
         ),
       ),
@@ -134,16 +134,16 @@ class MarketsGridListScreen extends StatelessWidget {
   // ============================================================
   // BÖLÜM BAŞLIĞI
   // ============================================================
-  Widget _buildSectionHeader({
+  Widget _buildSectionHeader({//widget
     required String title,
     required String subtitle,
   }) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 20, 20, 12),
+      padding: const EdgeInsets.fromLTRB(20, 20, 20, 12),//sol 20 üst 20 sağ 20 alt 12 px
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,//başlıklar arası boşluk
         children: [
-          Text(
+          Text(//text işlemleri
             title,
             style: const TextStyle(
               fontSize: 17,
@@ -152,12 +152,12 @@ class MarketsGridListScreen extends StatelessWidget {
             ),
           ),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),//yatay 10 dikey 4 boşulk iç
             decoration: BoxDecoration(
               color: const Color(0xFFEEF2FF),
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(20),//yuvarlama için 20 px
             ),
-            child: Text(
+            child: Text(//text işlemleri
               subtitle,
               style: const TextStyle(
                 fontSize: 12,
@@ -174,21 +174,21 @@ class MarketsGridListScreen extends StatelessWidget {
   // ============================================================
   // VARLIK GRID'İ
   // ============================================================
-  Widget _buildAssetsGrid() {
+  Widget _buildAssetsGrid() {//varlık gridi
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: GridView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: assets.length,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 12,
-          mainAxisSpacing: 12,
-          childAspectRatio: 1.15,
+      padding: const EdgeInsets.symmetric(horizontal: 20),//yatay 20px
+      child: GridView.builder(//tembel grid
+        shrinkWrap: true,//boyutu kısıtlar
+        physics: const NeverScrollableScrollPhysics(),//fizik grid kaymayı kapatrır
+        itemCount: assets.length,//asset uzuluğu
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(//grid düzenin belirler
+          crossAxisCount: 2,//sütün sayısı 2
+          crossAxisSpacing: 12,//sütün arası boşluk
+          mainAxisSpacing: 12,//satır arası boşluk
+          childAspectRatio: 1.15,//kartın genişlik yükselik oranı
         ),
         itemBuilder: (context, index) {
-          return _buildAssetCard(assets[index]);
+          return _buildAssetCard(assets[index]);//widget üretme
         },
       ),
     );
@@ -208,7 +208,7 @@ class MarketsGridListScreen extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: const Color(0xFFE2E8F0)),
         boxShadow: [
-          BoxShadow(
+          BoxShadow(//boxshadow rendk saydamlık gölge işlemelr,
             color: Colors.black.withOpacity(0.03),
             blurRadius: 10,
             offset: const Offset(0, 4),
@@ -318,8 +318,8 @@ class MarketsGridListScreen extends StatelessWidget {
         tx.isExpense ? const Color(0xFFDC2626) : const Color(0xFF16A34A);
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      padding: const EdgeInsets.all(12),
+      margin: const EdgeInsets.only(bottom: 10),//alttan 10px dış
+      padding: const EdgeInsets.all(12),//12px iç
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(14),
@@ -342,7 +342,7 @@ class MarketsGridListScreen extends StatelessWidget {
           // Başlık + Kategori + Tarih
           Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,//soldan başlangıç
               children: [
                 Text(
                   tx.title,
@@ -353,10 +353,10 @@ class MarketsGridListScreen extends StatelessWidget {
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 3),
+                const SizedBox(height: 3),//3px boşluk
                 Row(
                   children: [
-                    Container(
+                    Container(//container işlemleri
                       padding: const EdgeInsets.symmetric(
                         horizontal: 6,
                         vertical: 2,
@@ -365,7 +365,7 @@ class MarketsGridListScreen extends StatelessWidget {
                         color: const Color(0xFFF1F5F9),
                         borderRadius: BorderRadius.circular(4),
                       ),
-                      child: Text(
+                      child: Text(//text işlemleri
                         tx.category,
                         style: const TextStyle(
                           fontSize: 10,
@@ -374,15 +374,15 @@ class MarketsGridListScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(width: 6),
+                    const SizedBox(width: 6),//boşluk
                     Flexible(
-                      child: Text(
+                      child: Text(//text işlmeleri
                         tx.date,
                         style: const TextStyle(
                           fontSize: 11,
                           color: Color(0xFF94A3B8),
                         ),
-                        overflow: TextOverflow.ellipsis,
+                        overflow: TextOverflow.ellipsis,//uzun tariih keser
                       ),
                     ),
                   ],
@@ -390,12 +390,12 @@ class MarketsGridListScreen extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: 8),//8px boşluk
 
           // Tutar
           Text(
-            '$amountPrefix₺${tx.amount.toStringAsFixed(2)}',
-            style: TextStyle(
+            '$amountPrefix₺${tx.amount.toStringAsFixed(2)}',//iki ondalık yazım
+            style: TextStyle(//text işlemler,i
               fontSize: 14,
               fontWeight: FontWeight.bold,
               color: amountColor,

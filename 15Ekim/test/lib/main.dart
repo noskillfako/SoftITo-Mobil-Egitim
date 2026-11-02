@@ -1,31 +1,31 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';//material kütüphanesi şart tabi
 
 // ---- Ekran import'ları (dosya adlarınla birebir uyumlu)
-import 'screen/01_layout_screen.dart';
-import 'screen/02_market_list_screen.dart';
-import 'screen/03_transfer_form_screen.dart';
+import 'screen/01_layout_screen.dart';//layout ekranı
+import 'screen/02_market_list_screen.dart';//piyasa ekranı
+import 'screen/03_transfer_form_screen.dart';//transfer ekranı
 
-void main() {
-  runApp(const DtmMasterApp());
+void main() {//uygulama buradan başlar
+  runApp(const DtmMasterApp());//ana widget'ı çalıştır
 }
 
-class DtmMasterApp extends StatelessWidget {
-  const DtmMasterApp({super.key});
+class DtmMasterApp extends StatelessWidget {//ana uygulama sınıfı, state yok sabit
+  const DtmMasterApp({super.key});//key al
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: "DTM Flutter Sınıfı",
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF6366F1),
-          brightness: Brightness.light,
+    return MaterialApp(//materyal uygulama kabı
+      debugShowCheckedModeBanner: false,//sağ üstteki debug yazısını kapat
+      title: "DTM Flutter Sınıfı",//uygulama adı
+      theme: ThemeData(//tema ayarları
+        useMaterial3: true,//yeni materyal tasarım kullan
+        colorScheme: ColorScheme.fromSeed(//renk paleti tohumdan üretilir
+          seedColor: const Color(0xFF6366F1),//renk değişr
+          brightness: Brightness.light,//açık tema
         ),
-        scaffoldBackgroundColor: const Color(0xFFF8FAFC),
+        scaffoldBackgroundColor: const Color(0xFFF8FAFC),//renk değişr
       ),
-      home: const HomeShell(),
+      home: const HomeShell(),//açılış ekranı
     );
   }
 }
@@ -33,22 +33,22 @@ class DtmMasterApp extends StatelessWidget {
 // ============================================================
 // HOME SHELL — Alt navigasyon ile 3 ekranı toplar
 // ============================================================
-class HomeShell extends StatefulWidget {
+class HomeShell extends StatefulWidget {//seçili sekme değişecek o yüzden stateful
   const HomeShell({super.key});
 
   @override
-  State<HomeShell> createState() => _HomeShellState();
+  State<HomeShell> createState() => _HomeShellState();//state üret
 }
 
 class _HomeShellState extends State<HomeShell> {
-  int _currentIndex = 0;
+  int _currentIndex = 0;//şu an hangi sekmede olduğumuz, 0'dan başlar
 
   // ---- Sadece 3 sekme: Layout, Piyasalar, Transfer
   static const List<_TabInfo> _tabs = [
     _TabInfo(
       label: 'Layout',
-      icon: Icons.dashboard_outlined,
-      selectedIcon: Icons.dashboard,
+      icon: Icons.dashboard_outlined,//seçili değilken ikon
+      selectedIcon: Icons.dashboard,//seçiliyken ikon
     ),
     _TabInfo(
       label: 'Piyasalar',
@@ -63,7 +63,7 @@ class _HomeShellState extends State<HomeShell> {
   ];
 
   // ---- Sekmenin gövdesi (her biri Scaffold ile sarılı)
-  Widget _buildBody() {
+  Widget _buildBody() {//index'e göre hangi ekranı göstereceğiz
     switch (_currentIndex) {
       case 0:
         // LayoutStylingScreen kendi Scaffold'una sahip değil → sarmalıyoruz
@@ -78,36 +78,36 @@ class _HomeShellState extends State<HomeShell> {
         // TransferFormScreen da kendi Scaffold'una sahip
         return const TransferFormScreen();
       default:
-        return const SizedBox.shrink();
+        return const SizedBox.shrink();//boş kutu, hiç bişe gösterme
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
+      body: IndexedStack(//hepsi bellekte durur, hızlı geçiş için
+        index: _currentIndex,//hangisi görünsün
         children: [
           _ScaffoldedScreen(
             title: 'DTM Canlı Arayüz',
-            body: const LayoutStylingScreen(),
+            body: const LayoutStylingScreen(),//layout ekranı
           ),
-          const MarketsGridListScreen(),
-          const TransferFormScreen(),
+          const MarketsGridListScreen(),//piyasa ekranı
+          const TransferFormScreen(),//transfer ekranı
         ],
       ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _currentIndex,
-        onDestinationSelected: (index) {
-          setState(() => _currentIndex = index);
+      bottomNavigationBar: NavigationBar(//alttaki navigasyon çubuğu
+        selectedIndex: _currentIndex,//hangi sekme seçili
+        onDestinationSelected: (index) {//tıklanınca çalışır
+          setState(() => _currentIndex = index);//seçili sekmeyi güncelle
         },
-        backgroundColor: Colors.white,
-        indicatorColor: const Color(0xFFEEF2FF),
-        destinations: _tabs.map((tab) {
+        backgroundColor: Colors.white,//renk değişr
+        indicatorColor: const Color(0xFFEEF2FF),//renk değişr
+        destinations: _tabs.map((tab) {//her sekme için widget üret
           return NavigationDestination(
-            icon: Icon(tab.icon, color: const Color(0xFF64748B)),
-            selectedIcon: Icon(tab.selectedIcon, color: const Color(0xFF6366F1)),
-            label: tab.label,
+            icon: Icon(tab.icon, color: const Color(0xFF64748B)),//renk değişr
+            selectedIcon: Icon(tab.selectedIcon, color: const Color(0xFF6366F1)),//renk değişr
+            label: tab.label,//sekme yazısı
           );
         }).toList(),
       ),
@@ -118,17 +118,17 @@ class _HomeShellState extends State<HomeShell> {
 // ============================================================
 // YARDIMCI: Scaffold ile sarmalayıcı (LayoutStylingScreen için)
 // ============================================================
-class _ScaffoldedScreen extends StatelessWidget {
-  final String title;
-  final Widget body;
+class _ScaffoldedScreen extends StatelessWidget {//sarmalayıcı widget
+  final String title;//başlık
+  final Widget body;//içerik
 
-  const _ScaffoldedScreen({required this.title, required this.body});
+  const _ScaffoldedScreen({required this.title, required this.body});//ikisi de zorunlu
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8FAFC),
-      appBar: AppBar(
+      backgroundColor: const Color(0xFFF8FAFC),//renk değişr
+      appBar: AppBar(//üst bar
         title: Text(
           title,
           style: const TextStyle(
@@ -136,20 +136,20 @@ class _ScaffoldedScreen extends StatelessWidget {
             fontSize: 18,
           ),
         ),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        elevation: 0,
-        actions: [
+        centerTitle: true,//ortala
+        backgroundColor: Colors.white,//renk değişr
+        elevation: 0,//gölge yok
+        actions: [//sağdaki ikonlar
           IconButton(
-            icon: const Icon(Icons.notifications_active_outlined),
-            onPressed: () {
+            icon: const Icon(Icons.notifications_active_outlined),//bildirim ikonu
+            onPressed: () {//tıklayınca
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: const Text('Yeni bildiriminiz yok 🎉'),
-                  backgroundColor: const Color(0xFF6366F1),
-                  behavior: SnackBarBehavior.floating,
+                  content: const Text('Yeni bildiriminiz yok 🎉'),//mesaj
+                  backgroundColor: const Color(0xFF6366F1),//renk değişr
+                  behavior: SnackBarBehavior.floating,//yüzen bildirim
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(10),//köşe yuvarlak
                   ),
                 ),
               );
@@ -157,7 +157,7 @@ class _ScaffoldedScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: body,
+      body: body,//içeriği koy
     );
   }
 }
@@ -165,10 +165,10 @@ class _ScaffoldedScreen extends StatelessWidget {
 // ============================================================
 // YARDIMCI: Sekme meta bilgisi
 // ============================================================
-class _TabInfo {
-  final String label;
-  final IconData icon;
-  final IconData selectedIcon;
+class _TabInfo {//sekme bilgisini tutan küçük sınıf
+  final String label;//yazı
+  final IconData icon;//normal ikon
+  final IconData selectedIcon;//seçili ikon
 
   const _TabInfo({
     required this.label,
