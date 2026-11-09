@@ -6,6 +6,14 @@
 # Dependencies
 node_modules/
 
+# Firebase & Secrets
+**/firebase_options.dart
+**/google-services.json
+**/GoogleService-Info.plist
+**/.firebase/
+**/firebase-debug.log*
+**/firestore-debug.log*
+
 # Flutter / Dart
 **/build/
 **/.dart_tool/
